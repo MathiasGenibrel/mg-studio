@@ -1,0 +1,23 @@
+---
+import { EMAIL } from "../site";
+import Button from "./Button.astro";
+---
+
+<section id="contact" data-fx="write">
+  <div class="grid">
+    <h2 class="giant" data-split>
+      Écrivez-
+      <br />
+      moi.
+    </h2>
+    <div class="side">
+      <p>
+        Un produit, un site, une app ou une mission : Mathias vous répond sous 24 heures ouvrées.
+      </p>
+      <Button href={`mailto:${EMAIL}`} label="Écrire à Mathias" light />
+      <a class="mail" href={`mailto:${EMAIL}`}>
+        {EMAIL}
+      </a>
+    </div>
+  </div>
+</section>

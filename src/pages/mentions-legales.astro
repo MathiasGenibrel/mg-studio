@@ -1,0 +1,131 @@
+---
+import LegalPage from "../components/LegalPage.astro";
+import { EMAIL } from "../site";
+
+// Maquette Figma « Mentions légales — Desktop / Mobile ». Les mentions entre crochets restent à confirmer avant la mise en ligne
+const brief = [
+  {
+    q: "Qui édite ce site ?",
+    a: "Mathias Genibrel.",
+    p: "Entrepreneur individuel à Perpignan, sous le nom MG Studio.",
+  },
+  {
+    q: "Qui l’héberge ?",
+    a: "Infomaniak, en Suisse.",
+    p: "Infomaniak Network SA, rue Eugène-Marziano 25, 1227 Les Acacias (Genève).",
+  },
+  {
+    q: "Qui vous suit ?",
+    a: "Personne.",
+    p: "Aucun cookie, aucun traceur, aucune mesure d’audience.",
+  },
+];
+
+const editor = [
+  ["Nom commercial", "MG Studio"],
+  ["Exploitant", "Mathias Genibrel, entrepreneur individuel (micro-entreprise)"],
+  ["Adresse", "Appartement 13, 72 avenue Georges Guynemer, 66100 Perpignan, France"],
+  ["SIRET", "935 001 065 00017"],
+  ["Immatriculation", "RCS Perpignan 935 001 065"],
+  ["TVA", "Non applicable, article 293 B du CGI"],
+  ["Contact", EMAIL],
+  ["Directeur de la publication", "Mathias Genibrel"],
+] as const;
+
+const host = [
+  ["Hébergeur", "Infomaniak Network SA"],
+  ["Siège social", "Rue Eugène-Marziano 25, 1227 Les Acacias (Genève), Suisse"],
+  ["Immatriculation", "IDE CHE-103.167.648"],
+  ["Téléphone", "[à confirmer]"],
+  ["Lieu des données", "Centres de données Infomaniak en Suisse"],
+  ["Nom de domaine", "mg-studio.dev, enregistré chez Infomaniak Network SA"],
+] as const;
+
+const toc = [
+  { id: "editeur", label: "Éditeur" },
+  { id: "hebergement", label: "Hébergement" },
+  { id: "donnees-personnelles", label: "Données personnelles" },
+  { id: "propriete-intellectuelle", label: "Propriété intellectuelle" },
+  { id: "credits", label: "Crédits" },
+];
+---
+
+<LegalPage
+  path="/mentions-legales/"
+  title="Mentions légales"
+  description="Qui édite ce site, qui l’héberge, et qui vous suit : personne. Les mentions légales de MG Studio, dites simplement."
+  ogDescription="Ce que la loi demande d’afficher, dit simplement."
+  heading="Mentions légales."
+  lead="Ce que la loi demande d’afficher, dit simplement. En trois réponses, puis en détail."
+  brief={brief}
+  toc={toc}
+  updated={{ iso: "2026-11-08", label: "8 novembre 2026" }}
+>
+  <article id="editeur" aria-labelledby="h-editeur">
+    <h2 id="h-editeur">Éditeur</h2>
+    <dl>
+      {editor.map(([k, v]) => (
+        <div>
+          <dt>{k}</dt>
+          <dd>{k === "Contact" ? <a href={`mailto:${v}`}>{v}</a> : v}</dd>
+        </div>
+      ))}
+    </dl>
+  </article>
+
+  <article id="hebergement" aria-labelledby="h-hebergement">
+    <h2 id="h-hebergement">Hébergement</h2>
+    <dl>
+      {host.map(([k, v]) => (
+        <div>
+          <dt>{k}</dt>
+          <dd>{v}</dd>
+        </div>
+      ))}
+    </dl>
+  </article>
+
+  <article id="donnees-personnelles" aria-labelledby="h-donnees">
+    <h2 id="h-donnees">Données personnelles</h2>
+    <p>
+      Ce site ne dépose aucun cookie et ne mesure pas l’audience. Il n’appelle aucun service tiers :
+      la police et les scripts sont servis par le site lui-même.
+    </p>
+    <p>
+      Comme tout serveur, celui du site enregistre des journaux techniques (adresse IP, date, page
+      demandée) pour sa sécurité, notamment pour bloquer les robots malveillants. Ils sont effacés
+      automatiquement au bout de dix semaines au plus et ne servent à rien d’autre.
+    </p>
+    <p>
+      Si vous écrivez à Mathias, votre adresse et votre message servent seulement à vous répondre.
+      Ils ne sont ni revendus ni partagés, et sont effacés trois ans après notre dernier échange [à
+      confirmer].
+    </p>
+    <p>
+      Vous pouvez consulter, corriger ou faire effacer vos données en écrivant à{" "}
+      <a href={`mailto:${EMAIL}`}>{EMAIL}</a>. En cas de désaccord, vous pouvez saisir la CNIL (
+      <a href="https://www.cnil.fr">cnil.fr</a>).
+    </p>
+    <p>
+      Le détail est sur la page <a href="/confidentialite/">Vie privée</a>.
+    </p>
+  </article>
+
+  <article id="propriete-intellectuelle" aria-labelledby="h-pi">
+    <h2 id="h-pi">Propriété intellectuelle</h2>
+    <p>
+      Les textes, les visuels, le logo MG Studio et les noms Pulse, Limitless et Accord
+      appartiennent à MG Studio. Les reproduire demande un accord écrit ; les citer avec un lien,
+      non.
+    </p>
+  </article>
+
+  <article id="credits" aria-labelledby="h-credits">
+    <h2 id="h-credits">Crédits</h2>
+    <p>Conception, design et développement : MG Studio.</p>
+    <p>
+      Typographie : Bricolage Grotesque, de Mathieu Triay, sous licence SIL Open Font License 1.1.
+      Animations : GSAP. Site statique construit avec Astro.
+    </p>
+  </article>
+</LegalPage>

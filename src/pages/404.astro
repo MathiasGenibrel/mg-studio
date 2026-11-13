@@ -1,0 +1,70 @@
+---
+import Button from "../components/Button.astro";
+import LogoSprite from "../components/LogoSprite.astro";
+import Nav from "../components/Nav.astro";
+import Pupil from "../components/Pupil.astro";
+import Base from "../layouts/Base.astro";
+
+// Maquette Figma « 404 — Desktop / Mobile ». Astro génère 404.html, servi avec le statut 404 par deploy/nginx/site.conf
+---
+
+<Base
+  title="Page introuvable · MG Studio"
+  description="Cette page n’existe pas, ou plus. Le reste du site de MG Studio est bien là."
+  ogTitle="Page introuvable · MG Studio"
+  ogDescription="Cette page s’est couchée."
+  noindex
+>
+  <a class="skip" href="#main">
+    Aller au contenu
+  </a>
+  <LogoSprite />
+  <Nav home={false} minimal dark />
+
+  <main id="main" class="lost">
+    <!-- La fente suit le pointeur, puis revient vers le titre au repos (src/scripts/page.ts) -->
+    <div class="lost-sun">
+      <Pupil id="lost-sun" />
+    </div>
+    <div class="lost-body">
+      <p class="lost-code">Erreur 404</p>
+      <h1>
+        Cette page
+        <br />
+        s’est couchée.
+      </h1>
+      <p class="lost-lead">Elle n’existe pas, ou plus. Le reste du site, lui, est bien levé.</p>
+      <Button href="/" label="Retour à l’accueil" cream />
+      <nav class="lost-links" aria-labelledby="lost-links-title">
+        <p id="lost-links-title">
+          <span class="lost-d">Ou filez vers :</span>
+          <span class="lost-m">Ou :</span>
+        </p>
+        <ul>
+          <li>
+            <a href="/#pulse">
+              <span class="lost-d">Les produits</span>
+              <span class="lost-m">Produits</span>
+            </a>
+          </li>
+          <li>
+            <a href="/#manifeste">
+              <span class="lost-d">Le manifeste</span>
+              <span class="lost-m">Manifeste</span>
+            </a>
+          </li>
+          <li>
+            <a href="/#atelier">
+              <span class="lost-d">L’atelier</span>
+              <span class="lost-m">Atelier</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </main>
+</Base>
+
+<script>
+  import "../scripts/page";
+</script>

@@ -1,0 +1,11 @@
+node_modules
+dist
+.astro
+.git
+prototype
+*.log
+.env
+.env.*
+.DS_Store
+Dockerfile
+compose.yaml

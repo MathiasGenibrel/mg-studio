@@ -1,0 +1,20 @@
+---
+// Filtre SVG du contour de « Dessiner. » (effet draw, voir site.css) : à poser une fois par page qui l’utilise
+---
+
+<!-- Contour de « Dessiner. » : anneau de 2 px autour de la forme pleine (voir site.css) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter
+    id="outline"
+    x="-5%"
+    y="-5%"
+    width="110%"
+    height="110%"
+    color-interpolation-filters="sRGB"
+  >
+    <feMorphology in="SourceAlpha" operator="dilate" radius="2" result="grown"></feMorphology>
+    <feComposite in="grown" in2="SourceAlpha" operator="out" result="ring"></feComposite>
+    <feFlood flood-color="#F6EEDD"></feFlood>
+    <feComposite in2="ring" operator="in"></feComposite>
+  </filter>
+</svg>

@@ -1,0 +1,44 @@
+---
+import Button from "./Button.astro";
+
+// home : liens d’ancre sur la page d’accueil (sinon préfixés par « / ») ; minimal : logo et contact seuls (404) ; dark : sur fond nuit
+interface Props {
+  home?: boolean;
+  minimal?: boolean;
+  dark?: boolean;
+}
+
+const { home = true, minimal = false, dark = false } = Astro.props;
+const base = home ? "" : "/";
+const links = [
+  { href: `${base}#pulse`, label: "Produits" },
+  { href: `${base}#manifeste`, label: "Manifeste" },
+  { href: `${base}#atelier`, label: "Atelier" },
+];
+---
+
+<nav class:list={["nav", { dark }]} aria-label="Principale">
+  <a
+    class="brand"
+    href={home ? "#hero" : "/"}
+    aria-label={home ? "MG Studio, retour en haut" : "MG Studio, accueil"}
+  >
+    <svg class="brand-lockup" viewBox="0 0 295 128" aria-hidden="true" focusable="false">
+      <use href="#mg-lockup"></use>
+    </svg>
+    <svg class="brand-mark" viewBox="0 0 128 128" aria-hidden="true" focusable="false">
+      <use href="#mg-stamp"></use>
+    </svg>
+  </a>
+  <ul>
+    {!minimal &&
+      links.map((l) => (
+        <li>
+          <a href={l.href}>{l.label}</a>
+        </li>
+      ))}
+    <li>
+      <Button href={`${base}#contact`} label="Écrire à Mathias" cream={dark} />
+    </li>
+  </ul>
+</nav>

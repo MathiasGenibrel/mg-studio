@@ -1,0 +1,75 @@
+---
+import AccordCloud from "../components/AccordCloud.astro";
+import Atelier from "../components/Atelier.astro";
+import Band from "../components/Band.astro";
+import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
+import Hero from "../components/Hero.astro";
+import LimitlessMenubar from "../components/LimitlessMenubar.astro";
+import LogoSprite from "../components/LogoSprite.astro";
+import Manifeste from "../components/Manifeste.astro";
+import Nav from "../components/Nav.astro";
+import PulseTop from "../components/PulseTop.astro";
+import Base from "../layouts/Base.astro";
+import { productsGraph } from "../seo";
+
+const repo = "https://github.com/MathiasGenibrel/toolings/tree/main/packages";
+---
+
+<Base
+  title="MG Studio · Logiciels pour l’humain"
+  description="Mathias dessine, construit et édite des logiciels qui prolongent une pensée, et dont la difficulté s’efface à l’usage. Faits avec l’IA, pour l’humain. Perpignan."
+  ogTitle="MG Studio · Pour l’humain."
+  ogDescription="Des logiciels qui prolongent une pensée, et dont la difficulté s’efface à l’usage."
+  jsonLd={productsGraph()}
+>
+  <a class="skip" href="#main">
+    Aller au contenu
+  </a>
+  <LogoSprite />
+  <Nav />
+
+  <main id="main">
+    <Hero />
+    <Manifeste />
+
+    <Band
+      id="pulse"
+      fx="pulse"
+      meta="macOS · gratuit · open source"
+      text="CPU, mémoire et disque, d’un coup d’œil dans la barre des menus. Le coupable, groupé par app."
+      cta={{ label: "Découvrir Pulse", href: `${repo}/pulse`, light: true, external: true }}
+      name="Pulse"
+    >
+      <PulseTop />
+    </Band>
+    <Band
+      id="limitless"
+      fx="stretch"
+      meta="macOS · gratuit · open source"
+      text="Ce qu’il reste de vos forfaits Claude, Codex et Gemini, avant de toucher le mur."
+      cta={{ label: "Découvrir Limitless", href: `${repo}/limitless`, external: true }}
+      name="Limitless"
+    >
+      <LimitlessMenubar />
+    </Band>
+    <Band
+      id="accord"
+      fx="chord"
+      meta="iOS · Android · en développement"
+      text="Une messagerie chiffrée de bout en bout, pour deux. Rien d’autre."
+      cta={{ label: "Suivre le projet", href: "#contact" }}
+      name="Accord"
+    >
+      <AccordCloud />
+    </Band>
+
+    <Atelier />
+    <Contact />
+  </main>
+  <Footer />
+</Base>
+
+<script>
+  import "../scripts/main";
+</script>

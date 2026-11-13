@@ -1,0 +1,119 @@
+---
+import LegalPage from "../components/LegalPage.astro";
+import { EMAIL } from "../site";
+
+// Maquette Figma « Vie privée — Desktop / Mobile ». Les mentions entre crochets restent à confirmer avant la mise en ligne
+const brief = [
+  {
+    q: "Qui vous suit ?",
+    a: "Personne.",
+    p: "Aucun cookie, aucun traceur, aucune mesure d’audience.",
+  },
+  {
+    q: "Qui lit vos messages ?",
+    a: "Mathias, seul.",
+    p: "Vos e-mails servent à vous répondre, rien d’autre.",
+  },
+  {
+    q: "Que garde-t-on ?",
+    a: "Presque rien.",
+    p: "Des journaux techniques, et vos échanges le temps d’y répondre.",
+  },
+];
+
+const toc = [
+  { id: "responsable", label: "Responsable" },
+  { id: "traitement", label: "Ce qui est traité" },
+  { id: "conservation", label: "Conservation" },
+  { id: "destinataires", label: "Destinataires" },
+  { id: "droits", label: "Vos droits" },
+];
+
+const controller = [
+  ["Responsable du traitement", "Mathias Genibrel, entrepreneur individuel (MG Studio)"],
+  ["Adresse", "Appartement 13, 72 avenue Georges Guynemer, 66100 Perpignan, France"],
+  ["Contact", EMAIL],
+] as const;
+
+const processing = [
+  [
+    "Visite du site",
+    "Rien n’est collecté par le site. Son serveur tient des journaux techniques (adresse IP, date, page demandée) pour sa sécurité, notamment pour bloquer les robots malveillants.",
+  ],
+  [
+    "Écrire à Mathias",
+    "Votre adresse e-mail et votre message, pour vous répondre. Base légale : votre demande, ou l’intérêt légitime à vous répondre.",
+  ],
+  [
+    "Carte de visite",
+    "Rien : la fiche contact de mg-studio.dev/carte est un fichier que votre téléphone enregistre lui-même.",
+  ],
+  ["Cookies", "Aucun. Pas de bandeau : il n’y a rien à accepter."],
+] as const;
+---
+
+<LegalPage
+  path="/confidentialite/"
+  title="Vie privée"
+  description="Ce que le site de MG Studio collecte (presque rien), combien de temps, qui y accède, et comment exercer vos droits."
+  ogDescription="Ce site ne collecte presque rien. Voici ce presque rien."
+  heading="Vie privée."
+  lead="Ce site ne collecte presque rien. Voici ce presque rien, et ce que vous pouvez en faire."
+  brief={brief}
+  toc={toc}
+  updated={{ iso: "2026-11-09", label: "9 novembre 2026" }}
+>
+  <article id="responsable" aria-labelledby="h-responsable">
+    <h2 id="h-responsable">Responsable</h2>
+    <dl>
+      {controller.map(([k, v]) => (
+        <div>
+          <dt>{k}</dt>
+          <dd>{k === "Contact" ? <a href={`mailto:${v}`}>{v}</a> : v}</dd>
+        </div>
+      ))}
+    </dl>
+  </article>
+
+  <article id="traitement" aria-labelledby="h-traitement">
+    <h2 id="h-traitement">Ce qui est traité</h2>
+    <dl>
+      {processing.map(([k, v]) => (
+        <div>
+          <dt>{k}</dt>
+          <dd>{v}</dd>
+        </div>
+      ))}
+    </dl>
+  </article>
+
+  <article id="conservation" aria-labelledby="h-conservation">
+    <h2 id="h-conservation">Conservation</h2>
+    <p>Journaux techniques du serveur : dix semaines au plus, puis effacés automatiquement.</p>
+    <p>
+      Vos échanges par e-mail : trois ans après notre dernier échange [à confirmer], puis effacés.
+    </p>
+  </article>
+
+  <article id="destinataires" aria-labelledby="h-destinataires">
+    <h2 id="h-destinataires">Destinataires</h2>
+    <p>
+      Seul Mathias lit vos messages et les journaux du serveur. Infomaniak loue le serveur et
+      héberge la messagerie en Suisse, comme sous-traitant ; l’Union européenne reconnaît la Suisse
+      comme protégeant les données au même niveau. Rien n’est vendu, loué ni transmis à des fins
+      commerciales.
+    </p>
+  </article>
+
+  <article id="droits" aria-labelledby="h-droits">
+    <h2 id="h-droits">Vos droits</h2>
+    <p>
+      Vous pouvez accéder à vos données, les rectifier, les effacer, limiter ou refuser leur
+      traitement et demander leur portabilité, en écrivant à <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+      . Réponse sous un mois au plus.
+    </p>
+    <p>
+      En cas de désaccord, vous pouvez saisir la CNIL (<a href="https://www.cnil.fr">cnil.fr</a>).
+    </p>
+  </article>
+</LegalPage>

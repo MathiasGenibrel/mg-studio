@@ -1,0 +1,89 @@
+---
+import Button from "../components/Button.astro";
+import LogoSprite from "../components/LogoSprite.astro";
+import Base from "../layouts/Base.astro";
+import { EMAIL, PERSON, PHONE } from "../site";
+
+// Maquette Figma « Carte — Mobile / Desktop » : la page du QR de la carte papier. On retourne la carte : verso rouge, puis recto.
+// Pas de bouton Apple Wallet (décision du 9 novembre 2026), pas de script : la page doit s’afficher tout de suite
+const year = new Date().getFullYear();
+const rows = [
+  { label: "Appeler", value: PHONE.display, href: `tel:${PHONE.e164}` },
+  { label: "Écrire", value: EMAIL, href: `mailto:${EMAIL}` },
+  { label: "Voir le site", value: "mg-studio.dev", href: "/" },
+  { label: "Basé à", value: PERSON.place },
+];
+---
+
+<Base
+  title="Mathias Genibrel · MG Studio"
+  description="Mathias Genibrel, MG Studio : design et développement de sites web et d’apps macOS, iOS et Android, à Perpignan."
+  ogTitle="Mathias Genibrel · MG Studio"
+  ogDescription="Design & développement. Sites web, apps macOS, iOS et Android."
+  noindex
+>
+  <LogoSprite />
+  <main class="card-page">
+    <header class="cp-verso">
+      <a class="cp-logo" href="/" aria-label="MG Studio, accueil du site">
+        <svg viewBox="0 0 295 128" aria-hidden="true" focusable="false">
+          <use href="#mg-lockup"></use>
+        </svg>
+      </a>
+      <p class="cp-motto">Pour l’humain.</p>
+    </header>
+
+    <div class="cp-recto">
+      <div class="cp-main">
+        <h1>
+          {PERSON.given} {PERSON.family}
+        </h1>
+        <p class="cp-status">{PERSON.status}</p>
+        <p class="cp-craft">{PERSON.craft}</p>
+        <p class="cp-offer">{PERSON.offer}</p>
+
+        <div class="cp-action">
+          <Button
+            href="/mathias-genibrel.vcf"
+            download="mathias-genibrel.vcf"
+            type="text/vcard"
+            label="Enregistrer le contact"
+          />
+          <p>Une fiche contact (.vcf), à ajouter à vos contacts en un geste.</p>
+        </div>
+
+        <ul class="cp-rows">
+          {rows.map((r) => (
+            <li>
+              {r.href ? (
+                <a class="cp-row" href={r.href}>
+                  <span class="cp-text">
+                    <span class="cp-label">{r.label}</span>
+                    <span class="cp-value">
+                      <span class="ul">{r.value}</span>
+                    </span>
+                  </span>
+                  <span class="cp-arrow" aria-hidden="true">
+                    →
+                  </span>
+                </a>
+              ) : (
+                <p class="cp-row">
+                  <span class="cp-text">
+                    <span class="cp-label">{r.label}</span>
+                    <span class="cp-value">{r.value}</span>
+                  </span>
+                </p>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <footer class="cp-foot">
+        <p>Cette page ne vous suit pas : aucun cookie, aucun traceur.</p>
+        <p>© {year} MG Studio</p>
+      </footer>
+    </div>
+  </main>
+</Base>

@@ -1,0 +1,152 @@
+---
+import type { Service } from "../data/services";
+import { services } from "../data/services";
+import Base from "../layouts/Base.astro";
+import { serviceGraph } from "../seo";
+import Button from "./Button.astro";
+import Contact from "./Contact.astro";
+import Footer from "./Footer.astro";
+import LogoSprite from "./LogoSprite.astro";
+import Nav from "./Nav.astro";
+import OutlineFilter from "./OutlineFilter.astro";
+
+// Gabarit des pages de services (maquettes Figma « Design UX/UI », « Sites web sur mesure », « Applications natives »)
+interface Props {
+  service: Service;
+}
+
+const { service: s } = Astro.props;
+const others = services.filter((x) => x.slug !== s.slug);
+---
+
+<Base
+  title={`${s.name} · MG Studio`}
+  description={s.description}
+  ogTitle={`${s.name} · MG Studio`}
+  ogDescription={s.lead}
+  jsonLd={serviceGraph(s)}
+>
+  <a class="skip" href="#main">
+    Aller au contenu
+  </a>
+  <LogoSprite />
+  {s.fx === "draw" && <OutlineFilter />}
+  <Nav home={false} />
+
+  <main id="main" class="service">
+    <section class="sv-head">
+      <a class="sv-back ul" href="/#atelier">
+        ← L’atelier
+      </a>
+      <div class="sv-row">
+        <div>
+          <p class="sv-rank">Atelier · service {s.rank}</p>
+          <h1 style={`view-transition-name: sv-${s.slug}`}>
+            {s.title[0]}
+            <br />
+            {s.title[1]}
+          </h1>
+        </div>
+        <div class="sv-side">
+          <p class="sv-lead">{s.lead}</p>
+          <Button href="#contact" label="Écrire à Mathias" />
+          <p class="sv-note">Sur devis. Réponse sous 24 heures ouvrées.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sv-word" aria-labelledby="sv-verb">
+      <div class="sv-verb" data-fx={s.fx}>
+        <p class="sv-kicker">Manifeste</p>
+        <h2 class="giant" id="sv-verb" data-split>
+          {s.verb}
+        </h2>
+        <p class="sv-phrase">{s.phrase}</p>
+      </div>
+      <p class="sv-brief">{s.brief}</p>
+    </section>
+
+    <section class="sv-block sv-deliver" aria-labelledby="sv-deliver">
+      <h2 id="sv-deliver">Ce que vous recevez.</h2>
+      <ul class="sv-grid">
+        {s.deliverables.map(([t, x]) => (
+          <li>
+            <h3>{t}</h3>
+            <p>{x}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="sv-block sv-steps" aria-labelledby="sv-steps">
+      <h2 id="sv-steps">Comment ça se passe.</h2>
+      <ol>
+        {s.steps.map(([t, x], i) => (
+          <li>
+            <span class="sv-num" aria-hidden="true">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <h3>{t}</h3>
+            <p>{x}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="sv-block sv-work" aria-labelledby="sv-work">
+      <h2 id="sv-work">{s.workTitle}</h2>
+      <ul class:list={["sv-cards", `n${s.work.length}`]}>
+        {s.work.map((w) => (
+          <li>
+            <h3 class:list={["sv-card", w.tone]}>{w.name}</h3>
+            <p class="sv-meta">{w.meta}</p>
+            <p>{w.text}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="sv-block sv-faq" aria-labelledby="sv-faq">
+      <h2 id="sv-faq">
+        Questions <br />
+        fréquentes.
+      </h2>
+      <div class="sv-qs">
+        {s.faq.map(([q, a]) => (
+          <details open>
+            <summary>{q}</summary>
+            <p>{a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <nav class="sv-others" aria-labelledby="sv-others">
+      <p id="sv-others">Les deux autres services</p>
+      <ul>
+        {others.map((o) => (
+          <li>
+            <a href={`/${o.slug}/`}>
+              <span class="sv-o-text">
+                <span class="sv-o-name" style={`view-transition-name: sv-${o.slug}`}>
+                  <span class="ul">{o.name}.</span>
+                </span>
+                <span class="sv-o-teaser">{o.teaser}</span>
+              </span>
+              <span class="sv-o-arrow" aria-hidden="true">
+                →
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <Contact />
+  </main>
+  <Footer home={false} />
+</Base>
+
+<script>
+  import "../scripts/page";
+</script>

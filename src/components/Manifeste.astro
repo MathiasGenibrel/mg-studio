@@ -1,0 +1,35 @@
+---
+import OutlineFilter from "./OutlineFilter.astro";
+
+// Chaque mot porte son effet de survol (data-fx, voir src/scripts/fx.ts)
+const words = [
+  {
+    fx: "think",
+    title: "Penser.",
+    text: "Un logiciel commence par une idée simple, écrite à la main.",
+  },
+  { fx: "draw", title: "Dessiner.", text: "Chaque écran, chaque mouvement, au pixel près." },
+  { fx: "erase", title: "Effacer.", text: "On retire jusqu’à ce que le geste suffise." },
+  {
+    fx: "give",
+    title: "Donner.",
+    text: "Rien ne quitte votre appareil. Pas de pistage, pas de compte.",
+  },
+] as const;
+---
+
+<OutlineFilter />
+
+<section id="manifeste" aria-labelledby="m-title">
+  <p class="kicker" id="m-title">
+    Manifeste
+  </p>
+  {words.map((w, i) => (
+    <div class:list={["word", { right: i % 2 === 1 }]} data-fx={w.fx}>
+      <h3 class="giant" data-split>
+        {w.title}
+      </h3>
+      <p>{w.text}</p>
+    </div>
+  ))}
+</section>

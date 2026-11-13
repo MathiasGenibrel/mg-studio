@@ -1,0 +1,5 @@
+# minimatch < 11.0.1 : GHSA-g3hv-75wg-m249 (DoS), tiré par eslint et typescript-eslint
+overrides:
+  minimatch: 11.0.1
+  # Pair manquant de @napi-rs/wasm-runtime (via @astrojs/check) : sans cela pnpm prend la 2.0.0-beta, incompatible avec @emnapi/core 1.x
+  "@emnapi/runtime": 1.11.3

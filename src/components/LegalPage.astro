@@ -1,0 +1,87 @@
+---
+import Base from "../layouts/Base.astro";
+import { breadcrumb } from "../seo";
+import Footer from "./Footer.astro";
+import LogoSprite from "./LogoSprite.astro";
+import Nav from "./Nav.astro";
+
+// Gabarit des pages juridiques (maquettes Figma « Mentions légales » et « Vie privée ») : en-tête en trois réponses,
+// puis le détail avec un sommaire collant. Les articles passent par le slot, chacun avec l’id d’une entrée du sommaire
+interface Props {
+  path: string;
+  title: string;
+  description: string;
+  ogDescription: string;
+  heading: string;
+  lead: string;
+  brief: { q: string; a: string; p: string }[];
+  toc: { id: string; label: string }[];
+  updated: { iso: string; label: string };
+}
+
+const { path, title, description, ogDescription, heading, lead, brief, toc, updated } = Astro.props;
+---
+
+<Base
+  title={`${title} · MG Studio`}
+  description={description}
+  ogTitle={`${title} · MG Studio`}
+  ogDescription={ogDescription}
+  jsonLd={[breadcrumb([[title, path]])]}
+>
+  <a class="skip" href="#main">
+    Aller au contenu
+  </a>
+  <LogoSprite />
+  <Nav home={false} />
+
+  <main id="main" class="legal">
+    <section class="lg-head">
+      <a class="lg-back ul" href="/">
+        ← Retour à l’accueil
+      </a>
+      <h1>{heading}</h1>
+      <p class="lg-lead">{lead}</p>
+      <div class="lg-brief">
+        {brief.map((b) => (
+          <div>
+            <p class="lg-q">{b.q}</p>
+            <p class="lg-a">{b.a}</p>
+            <p class="lg-p">{b.p}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="lg-detail">
+      <nav class="lg-toc" aria-labelledby="lg-toc-title">
+        <p id="lg-toc-title">Sommaire</p>
+        <ul>
+          {toc.map((t, i) => (
+            <li>
+              <a href={`#${t.id}`} class:list={{ "is-active": i === 0 }}>
+                <span class="lg-mark" aria-hidden="true" />
+                <span class="ul">{t.label}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="lg-date">
+          Mis à jour le <time datetime={updated.iso}>{updated.label}</time>
+        </p>
+      </nav>
+
+      <div class="lg-articles">
+        <slot />
+        <p class="lg-date lg-date-end">
+          Mis à jour le <time datetime={updated.iso}>{updated.label}</time>
+        </p>
+      </div>
+    </section>
+  </main>
+  <Footer home={false} />
+</Base>
+
+<script>
+  import "../scripts/page";
+</script>

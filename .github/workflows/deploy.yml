@@ -1,0 +1,82 @@
+# MG Studio · construit l'image du site et la déploie sur le VPS à chaque push sur main.
+# L'image part directement par SSH (pas de registre) vers l'utilisateur « deploy », dont la clé ne peut
+# que lancer deploy/server/mg-deploy-site. Nginx Proxy Manager n'est jamais touché.
+name: Déploiement
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Construire et déployer
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment:
+      name: production
+      url: https://mg-studio.dev
+    steps:
+      # Actions épinglées par commit (une étiquette peut être déplacée par un attaquant)
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+
+      - name: Dépendances
+        run: |
+          corepack enable
+          pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Image Docker (astro check et build inclus)
+        run: docker build --pull -t "mg-studio-site:${GITHUB_SHA}" .
+
+      - name: Archive de l'image
+        run: |
+          docker save "mg-studio-site:${GITHUB_SHA}" | gzip -1 > image.tar.gz
+          ls -lh image.tar.gz
+
+      - name: Clé SSH de déploiement
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy
+          chmod 600 ~/.ssh/deploy
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: Déployer sur le VPS
+        env:
+          DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+        run: |
+          ssh -i ~/.ssh/deploy -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o BatchMode=yes \
+            "deploy@${DEPLOY_HOST}" "deploy ${GITHUB_SHA}" < image.tar.gz
+
+      - name: Vérifier https://mg-studio.dev
+        run: |
+          for i in 1 2 3 4 5 6; do
+            code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 https://mg-studio.dev/ || true)"
+            if [ "$code" = "200" ]; then echo "✓ https://mg-studio.dev répond 200"; exit 0; fi
+            echo "Tentative $i : HTTP $code"
+            sleep 10
+          done
+          echo "::error::https://mg-studio.dev ne répond pas 200. Le conteneur est en ligne sur le VPS : vérifier l'hôte mg-studio.dev dans Nginx Proxy Manager."
+          exit 1
+
+      - name: Effacer la clé
+        if: always()
+        run: rm -f ~/.ssh/deploy

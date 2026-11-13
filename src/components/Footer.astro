@@ -1,0 +1,114 @@
+---
+import { services } from "../data/services";
+import { EMAIL } from "../site";
+
+// Pied de page (composant Figma « Section · Pied », Desktop et Mobile). home : ancres locales, sinon préfixées par « / »
+interface Props {
+  home?: boolean;
+}
+
+const { home = true } = Astro.props;
+const base = home ? "" : "/";
+const year = new Date().getFullYear();
+
+const columns = [
+  {
+    id: "sf-produits",
+    title: "Produits",
+    links: [
+      { label: "Pulse", href: `${base}#pulse`, dot: "pulse" },
+      { label: "Limitless", href: `${base}#limitless`, dot: "limitless" },
+      { label: "Accord", href: `${base}#accord`, dot: "accord" },
+    ],
+  },
+  {
+    id: "sf-services",
+    title: "Services",
+    links: services.map((sv) => ({ label: sv.name, href: `/${sv.slug}/` })),
+  },
+  {
+    id: "sf-studio",
+    title: "Studio",
+    links: [
+      { label: "Manifeste", href: `${base}#manifeste` },
+      { label: "Atelier", href: `${base}#atelier` },
+      { label: "Écrire à Mathias", href: `${base}#contact` },
+    ],
+  },
+  {
+    id: "sf-cadre",
+    title: "Le cadre",
+    links: [
+      { label: "Mentions légales", href: "/mentions-legales/" },
+      { label: "Données personnelles", href: "/confidentialite/" },
+    ],
+  },
+];
+---
+
+<footer class="site-foot">
+  <div class="sf-head">
+    <div class="sf-sign">
+      <svg class="sf-logo" viewBox="0 0 128 128" aria-hidden="true" focusable="false">
+        <use href="#mg-stamp"></use>
+      </svg>
+      <p class="sf-motto">
+        Logiciels faits avec l’IA,
+        <br />
+        pour l’humain.
+      </p>
+    </div>
+    <div class="sf-promise">
+      <h2>
+        Ce site ne <br class="sf-br" />
+        vous suit pas.
+      </h2>
+      <p>
+        Aucun cookie, aucun traceur, aucune mesure d’audience. La police et les scripts sont servis
+        par le site lui-même, hébergé en Suisse chez Infomaniak.
+      </p>
+    </div>
+  </div>
+
+  <nav class="sf-index" aria-label="Pied de page">
+    {columns.map((c) => (
+      <div class:list={["sf-col", c.id]}>
+        <p class="sf-label" id={c.id}>
+          {c.title}
+        </p>
+        <ul aria-labelledby={c.id}>
+          {c.links.map((l) => (
+            <li>
+              <a href={l.href}>
+                {"dot" in l && <span class:list={["sf-dot", l.dot]} aria-hidden="true" />}
+                <span class="ul">{l.label}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+    <div class="sf-col sf-find">
+      <p class="sf-label" id="sf-trouver">
+        Nous trouver
+      </p>
+      <ul aria-labelledby="sf-trouver">
+        <li>
+          <a href={`mailto:${EMAIL}`}>
+            <span class="ul">{EMAIL}</span>
+          </a>
+        </li>
+      </ul>
+      <p class="sf-note">Perpignan (66), Pays catalan.</p>
+    </div>
+  </nav>
+
+  <div class="sf-bottom">
+    <p>© {year} MG Studio</p>
+    <p lang="ca">Fet amb cura a Perpinyà.</p>
+  </div>
+
+  <a class="sf-top" href="#top">
+    <span>Haut de page ↑</span>
+  </a>
+</footer>

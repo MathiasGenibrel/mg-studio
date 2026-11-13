@@ -1,0 +1,20 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+// Bouton-lien : le libellé est doublé pour l’effet « libellé qui roule » (src/scripts/common.ts)
+// light : blanc (sur couleur vive) ; cream : crème (sur fond nuit)
+interface Props extends HTMLAttributes<"a"> {
+  label: string;
+  light?: boolean;
+  cream?: boolean;
+}
+
+const { label, light = false, cream = false, class: className, ...attrs } = Astro.props;
+---
+
+<a class:list={["btn", { light, cream }, className]} {...attrs}>
+  <span class="roll">
+    <span>{label}</span>
+    <span aria-hidden="true">{label}</span>
+  </span>
+</a>

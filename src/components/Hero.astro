@@ -1,0 +1,21 @@
+---
+import Button from "./Button.astro";
+import Pupil from "./Pupil.astro";
+---
+
+<section id="hero">
+  <h1 class="giant" data-split>
+    Pour
+    <br />
+    l’humain.
+  </h1>
+  <p class="lead" data-fade>
+    Mathias dessine, construit et édite des logiciels qui prolongent une pensée, et dont la
+    difficulté s’efface à l’usage. Faits avec l’IA, pour l’humain. À Perpignan, depuis 2024.
+  </p>
+  <Button href="#pulse" label="Voir les produits" data-fade />
+  <!-- Le conteneur porte le parallaxe au scroll, le SVG l’entrée et le regard : deux animations, deux éléments -->
+  <div class="sun">
+    <Pupil id="sun" />
+  </div>
+</section>

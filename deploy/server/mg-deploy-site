@@ -1,0 +1,46 @@
+#!/bin/bash
+# MG Studio · commande forcée de la clé SSH de la CI, installée sur le VPS dans /usr/local/bin (appartient à root).
+# Dans ~deploy/.ssh/authorized_keys : command="/usr/local/bin/mg-deploy-site",restrict ssh-ed25519 … github-actions@mg-studio
+# La CI envoie : ssh deploy@VPS "deploy <sha>" < image.tar.gz
+# Cette clé ne permet rien d'autre : ni terminal, ni autre commande, ni modification du compose.yaml.
+set -euo pipefail
+
+export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/docker.sock"
+APP="$HOME/apps/mg-studio"
+STATE="$HOME/.local/state/mg-studio"
+IMAGE="mg-studio-site"
+
+read -r action tag extra <<<"${SSH_ORIGINAL_COMMAND:-}"
+if [[ "${action:-}" != "deploy" || ! "${tag:-}" =~ ^[0-9a-f]{40}$ || -n "${extra:-}" ]]; then
+  echo "Commande refusée : seule « deploy <sha du commit> » est permise." >&2
+  exit 2
+fi
+
+echo "→ Chargement de $IMAGE:$tag"
+gunzip -c | docker load -q
+docker image inspect "$IMAGE:$tag" >/dev/null # l'archive contenait bien cette version
+
+cd "$APP"
+prev="$(docker inspect -f '{{.Config.Image}}' mg-studio-site 2>/dev/null || true)"
+echo "→ Lancement (version précédente : ${prev:-aucune})"
+
+if ! MG_TAG="$tag" docker compose up -d --wait --wait-timeout 90; then
+  echo "✗ Le nouveau conteneur n'est pas sain :" >&2
+  docker logs --tail 30 mg-studio-site >&2 || true
+  if [[ "$prev" == "$IMAGE:"* ]]; then
+    echo "→ Retour à $prev" >&2
+    MG_TAG="${prev#"$IMAGE:"}" docker compose up -d --wait --wait-timeout 90 >&2 || true
+  fi
+  exit 1
+fi
+
+mkdir -p "$STATE"
+echo "$tag" >"$STATE/current"
+
+# Ménage : on garde les trois dernières versions pour pouvoir revenir en arrière
+docker image ls "$IMAGE" --format '{{.CreatedAt}}|{{.Repository}}:{{.Tag}}' | sort -r | tail -n +4 | cut -d'|' -f2 |
+  xargs -r docker image rm >/dev/null 2>&1 || true
+docker image prune -f >/dev/null 2>&1 || true
+
+echo "✓ $IMAGE:$tag en ligne"

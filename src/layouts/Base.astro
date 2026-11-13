@@ -1,0 +1,63 @@
+---
+import { siteGraph } from "../seo";
+import "../styles/site.css";
+
+interface Props {
+  title: string;
+  description: string;
+  ogTitle: string;
+  ogDescription: string;
+  noindex?: boolean;
+  /** Nœuds JSON-LD propres à la page, ajoutés au graphe du studio (absent des pages noindex) */
+  jsonLd?: Record<string, unknown>[];
+}
+
+const { title, description, ogTitle, ogDescription, noindex = false, jsonLd = [] } = Astro.props;
+// Adresse canonique (avec la barre finale, comme publiée par Astro) : pages indexables seulement
+const canonical = noindex ? null : new URL(Astro.url.pathname, Astro.site).href;
+const graph = noindex
+  ? null
+  : { "@context": "https://schema.org", "@graph": [...siteGraph(), ...jsonLd] };
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
+    {canonical && <link rel="canonical" href={canonical} />}
+    {canonical && <meta property="og:url" content={canonical} />}
+    {graph && (
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify(graph).replace(/</g, "\\u003c")}
+      />
+    )}
+    <meta name="theme-color" content="#FFC22E" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link
+      rel="preload"
+      href="/fonts/bricolage-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <!-- Cache les grands mots avant leur découpage ; retiré au bout de 3 s si les scripts ne se chargent pas -->
+    <script is:inline>
+      document.documentElement.classList.add("js");
+      setTimeout(function () {
+        document.documentElement.classList.remove("js");
+      }, 3000);
+    </script>
+  </head>
+  <!-- id="top" : cible du lien « Haut de page » du pied -->
+  <body id="top">
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,52 @@
+---
+// Chaque titre mène à la page du service (src/pages/design-ux-ui.astro, sites-web.astro, applications-natives.astro)
+const services = [
+  {
+    title: "Design UX/UI",
+    text: "Parcours, maquettes et prototypes prêts à être codés.",
+    slug: "design-ux-ui",
+    href: "/design-ux-ui/",
+  },
+  {
+    title: "Sites web sur mesure",
+    text: "Construits avec l’IA, livrés vite, sans gestionnaire imposé.",
+    slug: "sites-web",
+    href: "/sites-web/",
+  },
+  {
+    title: "Applications natives",
+    text: "macOS et iOS en Swift, Android en Kotlin.",
+    slug: "applications-natives",
+    href: "/applications-natives/",
+  },
+];
+---
+
+<section id="atelier">
+  <p class="kicker" style="font-size:14px;margin-bottom:40px">
+    Atelier
+  </p>
+  <h2 data-reveal>
+    Une seule personne,
+    <br />
+    du croquis au code.
+  </h2>
+  <p class="chapeau">
+    Mathias dessine les écrans, écrit le code et met en ligne. Vous parlez directement à la personne
+    qui fait.
+  </p>
+  <div class="services">
+    {services.map((s) => (
+      <div>
+        <h4 style={`view-transition-name: sv-${s.slug}`}>
+          <a class="ul" href={s.href}>
+            {s.title}
+            <span aria-hidden="true">→</span>
+          </a>
+        </h4>
+        <p>{s.text}</p>
+      </div>
+    ))}
+  </div>
+  <p class="refs">Réalisations : Seb Auto Moto École · Action Motors School</p>
+</section>

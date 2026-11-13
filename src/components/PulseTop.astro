@@ -1,0 +1,95 @@
+---
+// Illustration (données simulées) : les apps qui consomment le plus de processeur, regroupées comme dans Pulse.
+// cpu : valeur affichée au départ ; base : niveau de repos de la simulation ; spike : l’app qui monte en pic (src/scripts/main.ts §9)
+interface App {
+  ico: string;
+  name: string;
+  count: number;
+  detail: string;
+  cpu: number;
+  base: number;
+  spike?: boolean;
+}
+
+const apps: App[] = [
+  {
+    ico: "N",
+    name: "Node.js",
+    count: 12,
+    detail: "12 processus · next-server, vite, tsc, eslint…",
+    cpu: 41,
+    base: 9,
+    spike: true,
+  },
+  {
+    ico: "S",
+    name: "Safari",
+    count: 9,
+    detail: "9 processus · Safari, 8 pages web, extensions",
+    cpu: 12,
+    base: 7,
+  },
+  {
+    ico: "D",
+    name: "Docker",
+    count: 4,
+    detail: "4 processus · com.docker.backend, qemu-system…",
+    cpu: 8,
+    base: 5,
+  },
+  {
+    ico: "F",
+    name: "Figma",
+    count: 3,
+    detail: "3 processus · Figma, Figma Helper (GPU)",
+    cpu: 6,
+    base: 4,
+  },
+  {
+    ico: "X",
+    name: "Xcode",
+    count: 2,
+    detail: "2 processus · Xcode, SourceKitService",
+    cpu: 3,
+    base: 3,
+  },
+];
+
+// Même échelle que la simulation : la barre est pleine à 87 %
+const bar = (cpu: number) => Math.min(1, (cpu * 1.15) / 100).toFixed(2);
+---
+
+<div
+  class="pulse-top"
+  data-fade
+  role="img"
+  aria-label="Illustration de Pulse : les apps qui consomment le plus de processeur, regroupées par app. Node.js et ses 12 processus en tête."
+>
+  <div class="pt-head" aria-hidden="true">
+    <span>Plus gros consommateurs · regroupés par app</span>
+    <span class="pt-chip">CPU</span>
+  </div>
+  <ol aria-hidden="true">
+    {apps.map((a, i) => (
+      <li
+        class:list={["pt-row", { "is-hot": i === 0 && a.cpu > 40 }]}
+        data-cpu={a.cpu}
+        data-base={a.base}
+        data-spike={a.spike ? "" : undefined}
+      >
+        <span class="pt-ico">{a.ico}</span>
+        <span class="pt-name">
+          <span class="pt-title">
+            {a.name}
+            <span class="pt-badge">×{a.count}</span>
+          </span>
+          <span class="pt-detail">{a.detail}</span>
+        </span>
+        <span class="pt-bar">
+          <i style={`transform:scaleX(${bar(a.cpu)})`} />
+        </span>
+        <span class="pt-val">{a.cpu}&#8239;%</span>
+      </li>
+    ))}
+  </ol>
+</div>

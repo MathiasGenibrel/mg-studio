@@ -1,0 +1,32 @@
+---
+import Button from "./Button.astro";
+
+// Bande produit : méta, texte, bouton, visuel (slot) et grand nom qui défile au scroll
+interface Props {
+  id: string;
+  fx: "pulse" | "stretch" | "chord";
+  meta: string;
+  text: string;
+  cta: { label: string; href: string; light?: boolean; external?: boolean };
+  name: string;
+}
+
+const { id, fx, meta, text, cta, name } = Astro.props;
+---
+
+<section class="band" id={id} data-fx={fx}>
+  <p class="meta">{meta}</p>
+  <div class="copy">
+    <p>{text}</p>
+    <Button
+      href={cta.href}
+      label={cta.label}
+      light={cta.light ?? false}
+      rel={cta.external ? "noopener" : undefined}
+    />
+  </div>
+  <slot />
+  <h2 class="giant" data-split>
+    {name}
+  </h2>
+</section>

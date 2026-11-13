@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MG Studio · Logiciels pour l’humain</title>
+<meta name="description" content="MG Studio dessine, construit et édite des logiciels qui prolongent une pensée, et dont la difficulté s’efface à l’usage. Faits avec l’IA, pour l’humain. Perpignan.">
+<meta name="theme-color" content="#FFC22E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="MG Studio · Pour l’humain.">
+<meta property="og:description" content="Des logiciels qui prolongent une pensée, et dont la difficulté s’efface à l’usage.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/bricolage-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/site.css">
+<script>document.documentElement.classList.add("js");setTimeout(function(){document.documentElement.classList.remove("js")},3000);</script>
+</head>
+<body>
+<a class="skip" href="#main">Aller au contenu</a>
+<!-- Logo MG Studio, le poinçon (source Figma : composant MG Studio/Logo). Les lettres sont des réserves : elles laissent voir le fond -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="mg-stamp" viewBox="0 0 128 128"><path fill-rule="evenodd" d="M128 128H0V0H128V128ZM40 64C26.745 64 16 74.745 16 88C16 101.255 26.745 112 40 112H88A24 24 0 0 0 112 88C112 85.195 111.517 82.502 110.633 80H80V96H40C35.582 96 32 92.418 32 88C32 83.582 35.582 80 40 80H80V64H40ZM40 16C26.745 16 16 26.745 16 40V52.8H32V44C32 37.373 37.373 32 44 32C50.627 32 56 37.373 56 44V52.8H72V44C72 37.373 77.373 32 84 32C90.627 32 96 37.373 96 44V52.8H112V40C112 26.745 101.255 16 88 16H40Z"/></symbol>
+  <symbol id="mg-lockup" viewBox="0 0 295 128"><path fill-rule="evenodd" d="M128 128H0V0H128V128ZM40 64C26.745 64 16 74.745 16 88C16 101.255 26.745 112 40 112H88A24 24 0 0 0 112 88C112 85.195 111.517 82.502 110.633 80H80V96H40C35.582 96 32 92.418 32 88C32 83.582 35.582 80 40 80H80V64H40ZM40 16C26.745 16 16 26.745 16 40V52.8H32V44C32 37.373 37.373 32 44 32C50.627 32 56 37.373 56 44V52.8H72V44C72 37.373 77.373 32 84 32C90.627 32 96 37.373 96 44V52.8H112V40C112 26.745 101.255 16 88 16H40Z"/><path d="M161.7 128C160.3 128 158.9 127.8 157.6 127.5C156.3 127.1 155 126.5 153.9 125.8C152.8 125.1 151.8 124.3 151 123.2L154.8 119.5C155.7 120.5 156.7 121.3 157.9 121.8C159 122.3 160.4 122.6 161.9 122.6C163.2 122.6 164.2 122.4 164.9 122C165.6 121.6 165.9 121 165.9 120.3C165.9 119.5 165.6 118.9 164.9 118.4C164.3 118 163.4 117.6 162.4 117.4C161.4 117 160.3 116.7 159.2 116.4C158 116.1 157 115.6 155.9 115.1C154.9 114.5 154.1 113.7 153.4 112.8C152.8 111.8 152.5 110.5 152.5 109C152.5 107.3 152.8 105.9 153.6 104.7C154.4 103.5 155.5 102.6 156.9 102C158.3 101.3 160 101 162 101C164.1 101 165.9 101.4 167.5 102.1C169.1 102.9 170.5 104 171.6 105.4L167.8 109.2C167 108.3 166.2 107.6 165.2 107.1C164.2 106.6 163.1 106.4 161.9 106.4C160.7 106.4 159.7 106.6 159.1 106.9C158.5 107.3 158.1 107.8 158.1 108.5C158.1 109.2 158.5 109.8 159.1 110.2C159.7 110.6 160.6 110.9 161.6 111.2C162.6 111.5 163.7 111.8 164.8 112.2C166 112.5 167.1 113 168.1 113.6C169.1 114.2 170 114.9 170.6 116C171.2 116.9 171.6 118.2 171.6 119.8C171.6 122.3 170.7 124.3 168.9 125.8C167.2 127.3 164.8 128 161.7 128ZM180.4 127.5V90.7H186.4V127.5H180.4ZM174.2 106.9V101.5H192.6V106.9H174.2ZM207.5 128C205.3 128 203.4 127.5 201.6 126.5C199.9 125.6 198.6 124.2 197.6 122.5C196.7 120.8 196.2 118.8 196.2 116.6V101.5H202.2V116.3C202.2 117.6 202.4 118.7 202.8 119.6C203.2 120.4 203.8 121.1 204.6 121.6C205.4 122 206.4 122.3 207.5 122.3C209.2 122.3 210.6 121.8 211.5 120.8C212.4 119.7 212.9 118.2 212.9 116.3V101.5H218.8V116.6C218.8 118.9 218.3 120.9 217.3 122.6C216.4 124.3 215.1 125.6 213.4 126.6C211.7 127.5 209.7 128 207.5 128ZM235.6 128C233.3 128 231.2 127.4 229.3 126.2C227.4 125 225.9 123.4 224.8 121.4C223.7 119.4 223.2 117.1 223.2 114.6C223.2 112 223.7 109.7 224.8 107.7C225.9 105.6 227.4 104 229.3 102.8C231.2 101.6 233.3 101 235.6 101C237.6 101 239.4 101.4 240.9 102.3C242.4 103.1 243.6 104.3 244.5 105.8C245.4 107.2 245.9 108.9 245.9 110.8V118.2C245.9 120.1 245.4 121.8 244.5 123.2C243.7 124.7 242.5 125.9 240.9 126.8C239.4 127.6 237.6 128 235.6 128ZM236.6 122.4C238.1 122.4 239.4 122.1 240.4 121.4C241.6 120.7 242.4 119.8 243 118.6C243.6 117.4 243.9 116 243.9 114.5C243.9 113 243.6 111.6 243 110.4C242.4 109.2 241.6 108.3 240.4 107.6C239.4 107 238.1 106.6 236.6 106.6C235.2 106.6 233.9 107 232.8 107.6C231.7 108.3 230.8 109.2 230.2 110.4C229.6 111.6 229.3 113 229.3 114.5C229.3 116 229.6 117.4 230.2 118.6C230.8 119.8 231.7 120.7 232.8 121.4C233.9 122.1 235.2 122.4 236.6 122.4ZM249.5 127.5H243.6V120.5L244.6 114.2L243.6 107.9V88.6H249.5V127.5ZM256.2 127.5V101.5H262.1V127.5H256.2ZM259.1 96.8C258.1 96.8 257.3 96.4 256.6 95.8C255.9 95.1 255.6 94.2 255.6 93.2C255.6 92.2 255.9 91.4 256.6 90.7C257.3 90 258.1 89.7 259.1 89.7C260.2 89.7 261 90 261.7 90.7C262.3 91.4 262.6 92.2 262.6 93.2C262.6 94.2 262.3 95.1 261.7 95.8C261 96.4 260.2 96.8 259.1 96.8ZM280.6 128C278.1 128 275.8 127.4 273.8 126.2C271.7 125 270.1 123.4 268.9 121.3C267.7 119.2 267.1 117 267.1 114.4C267.1 111.9 267.7 109.7 268.9 107.6C270.1 105.6 271.7 104 273.8 102.8C275.8 101.6 278.1 101 280.6 101C283.2 101 285.5 101.6 287.5 102.8C289.6 104 291.2 105.6 292.4 107.6C293.6 109.7 294.2 111.9 294.2 114.4C294.2 117 293.6 119.2 292.4 121.3C291.2 123.4 289.6 125 287.5 126.2C285.5 127.4 283.2 128 280.6 128ZM280.6 122.3C282.1 122.3 283.4 122 284.5 121.3C285.7 120.6 286.6 119.7 287.2 118.5C287.8 117.3 288.1 116 288.1 114.4C288.1 112.9 287.8 111.6 287.2 110.4C286.5 109.3 285.6 108.4 284.5 107.7C283.4 107.1 282.1 106.7 280.6 106.7C279.2 106.7 277.9 107.1 276.7 107.7C275.6 108.4 274.8 109.3 274.1 110.4C273.5 111.6 273.2 112.9 273.2 114.4C273.2 116 273.5 117.3 274.1 118.5C274.8 119.7 275.6 120.6 276.7 121.3C277.9 122 279.2 122.3 280.6 122.3Z"/></symbol>
+</svg>
+<nav class="nav" aria-label="Principale">
+  <a class="brand" href="#hero" aria-label="MG Studio, retour en haut"><svg class="brand-lockup" viewBox="0 0 295 128" aria-hidden="true" focusable="false"><use href="#mg-lockup"/></svg><svg class="brand-mark" viewBox="0 0 128 128" aria-hidden="true" focusable="false"><use href="#mg-stamp"/></svg></a>
+  <ul>
+    <li><a href="#pulse">Produits</a></li>
+    <li><a href="#manifeste">Manifeste</a></li>
+    <li><a href="#atelier">Atelier</a></li>
+    <li><a class="btn" href="#contact"><span class="roll"><span>Écrire à Mathias</span><span aria-hidden="true">Écrire à Mathias</span></span></a></li>
+  </ul>
+</nav>
+
+<!-- Contour de « Dessiner. » : anneau de 2 px autour de la forme pleine (voir site.css) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="outline" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+    <feMorphology in="SourceAlpha" operator="dilate" radius="2" result="grown"/>
+    <feComposite in="grown" in2="SourceAlpha" operator="out" result="ring"/>
+    <feFlood flood-color="#F6EEDD"/>
+    <feComposite in2="ring" operator="in"/>
+  </filter>
+</svg>
+
+<main id="main">
+  <section id="hero">
+    <h1 class="giant" data-split>Pour<br>l’humain.</h1>
+    <p class="lead" data-fade>MG Studio dessine, construit et édite des logiciels qui prolongent une pensée, et dont la difficulté s’efface à l’usage. Faits avec l’IA, pour l’humain. À Perpignan, depuis 2024.</p>
+    <a class="btn" href="#pulse" data-fade><span class="roll"><span>Voir les produits</span><span aria-hidden="true">Voir les produits</span></span></a>
+    <svg id="sun" viewBox="0 0 600 600" aria-hidden="true"><path fill-rule="evenodd" d="M300 0A300 300 0 1 1 300 600A300 300 0 1 1 300 0ZM391.88 497.94L497.94 391.88A75 75 0 0 0 391.88 285.81L285.81 391.88A75 75 0 0 0 391.88 497.94Z"/></svg>
+  </section>
+
+  <section id="manifeste" aria-labelledby="m-title">
+    <p class="kicker" id="m-title">Manifeste</p>
+    <div class="word" data-fx="think"><h3 class="giant" data-split>Penser.</h3><p>Un logiciel commence par une idée simple, écrite à la main.</p></div>
+    <div class="word right" data-fx="draw"><h3 class="giant" data-split>Dessiner.</h3><p>Chaque écran, chaque mouvement, au pixel près.</p></div>
+    <div class="word" data-fx="erase"><h3 class="giant" data-split>Effacer.</h3><p>On retire jusqu’à ce que le geste suffise.</p></div>
+    <div class="word right" data-fx="give"><h3 class="giant" data-split>Donner.</h3><p>Rien ne quitte votre appareil. Pas de pistage, pas de compte.</p></div>
+  </section>
+
+  <section class="band" id="pulse" data-fx="pulse">
+    <p class="meta">macOS · gratuit · open source</p>
+    <div class="copy"><p>CPU, mémoire et disque, d’un coup d’œil dans la barre des menus. Le coupable, groupé par app.</p>
+      <a class="btn light" href="https://github.com/MathiasGenibrel/toolings/tree/main/packages/pulse" rel="noopener"><span class="roll"><span>Découvrir Pulse</span><span aria-hidden="true">Découvrir Pulse</span></span></a></div>
+    <!-- Illustration (données simulées) : les apps qui consomment le plus de processeur, regroupées comme dans Pulse -->
+    <div class="pulse-top" data-fade role="img" aria-label="Illustration de Pulse : les apps qui consomment le plus de processeur, regroupées par app. Node.js et ses 12 processus en tête.">
+      <div class="pt-head" aria-hidden="true"><span>Plus gros consommateurs · regroupés par app</span><span class="pt-chip">CPU</span></div>
+      <ol aria-hidden="true">
+        <li class="pt-row is-hot" data-cpu="41" data-base="9" data-spike><span class="pt-ico">N</span><span class="pt-name"><span class="pt-title">Node.js<span class="pt-badge">×12</span></span><span class="pt-detail">12 processus · next-server, vite, tsc, eslint…</span></span><span class="pt-bar"><i style="transform:scaleX(0.47)"></i></span><span class="pt-val">41&#8239;%</span></li>
+        <li class="pt-row" data-cpu="12" data-base="7"><span class="pt-ico">S</span><span class="pt-name"><span class="pt-title">Safari<span class="pt-badge">×9</span></span><span class="pt-detail">9 processus · Safari, 8 pages web, extensions</span></span><span class="pt-bar"><i style="transform:scaleX(0.14)"></i></span><span class="pt-val">12&#8239;%</span></li>
+        <li class="pt-row" data-cpu="8" data-base="5"><span class="pt-ico">D</span><span class="pt-name"><span class="pt-title">Docker<span class="pt-badge">×4</span></span><span class="pt-detail">4 processus · com.docker.backend, qemu-system…</span></span><span class="pt-bar"><i style="transform:scaleX(0.09)"></i></span><span class="pt-val">8&#8239;%</span></li>
+        <li class="pt-row" data-cpu="6" data-base="4"><span class="pt-ico">F</span><span class="pt-name"><span class="pt-title">Figma<span class="pt-badge">×3</span></span><span class="pt-detail">3 processus · Figma, Figma Helper (GPU)</span></span><span class="pt-bar"><i style="transform:scaleX(0.07)"></i></span><span class="pt-val">6&#8239;%</span></li>
+        <li class="pt-row" data-cpu="3" data-base="3"><span class="pt-ico">X</span><span class="pt-name"><span class="pt-title">Xcode<span class="pt-badge">×2</span></span><span class="pt-detail">2 processus · Xcode, SourceKitService</span></span><span class="pt-bar"><i style="transform:scaleX(0.03)"></i></span><span class="pt-val">3&#8239;%</span></li>
+      </ol>
+    </div>
+    <h2 class="giant" data-split>Pulse</h2>
+  </section>
+  <section class="band" id="limitless" data-fx="stretch">
+    <p class="meta">macOS · gratuit · open source</p>
+    <div class="copy"><p>Ce qu’il reste de vos forfaits Claude, Codex et Gemini, avant de toucher le mur.</p>
+      <a class="btn" href="https://github.com/MathiasGenibrel/toolings/tree/main/packages/limitless" rel="noopener"><span class="roll"><span>Découvrir Limitless</span><span aria-hidden="true">Découvrir Limitless</span></span></a></div>
+    <!-- Illustration (données simulées) : l’extra de Limitless dans la barre des menus, agrandi -->
+    <div class="lt-menubar" data-fade role="img" aria-label="Illustration de Limitless dans la barre des menus : un anneau et un pourcentage par compte, Claude 46 %, Codex 22 %, Gemini 71 %.">
+      <div class="lt-strip" aria-hidden="true">
+        <svg class="lt-mark" viewBox="0 0 600 600"><path fill="currentColor" fill-rule="evenodd" d="M300 0A300 300 0 1 1 300 600A300 300 0 1 1 300 0ZM391.88 497.94L497.94 391.88A75 75 0 0 0 391.88 285.81L285.81 391.88A75 75 0 0 0 391.88 497.94Z"/></svg>
+        <span class="lt-item claude" data-u="46" data-rate="0.9"><svg viewBox="0 0 40 40" aria-hidden="true"><circle class="lt-track" cx="20" cy="20" r="16"/><circle class="lt-ring" cx="20" cy="20" r="16" pathLength="100" transform="rotate(-90 20 20)" style="stroke-dashoffset:54"/><text x="20" y="20">C</text></svg><span class="lt-val">46&#8239;%</span></span>
+        <span class="lt-item codex" data-u="22" data-rate="0.35"><svg viewBox="0 0 40 40" aria-hidden="true"><circle class="lt-track" cx="20" cy="20" r="16"/><circle class="lt-ring" cx="20" cy="20" r="16" pathLength="100" transform="rotate(-90 20 20)" style="stroke-dashoffset:78"/><text x="20" y="20">X</text></svg><span class="lt-val">22&#8239;%</span></span>
+        <span class="lt-item gemini" data-u="71" data-rate="0.5"><svg viewBox="0 0 40 40" aria-hidden="true"><circle class="lt-track" cx="20" cy="20" r="16"/><circle class="lt-ring" cx="20" cy="20" r="16" pathLength="100" transform="rotate(-90 20 20)" style="stroke-dashoffset:29"/><text x="20" y="20">G</text></svg><span class="lt-val">71&#8239;%</span></span>
+      </div>
+      <p class="lt-cap" aria-hidden="true">Un anneau et une valeur par compte, aux couleurs de Claude, Codex et Gemini.</p>
+    </div>
+    <h2 class="giant" data-split>Limitless</h2>
+  </section>
+  <section class="band" id="accord" data-fx="chord">
+    <p class="meta">iOS · Android · en développement</p>
+    <div class="copy"><p>Une messagerie chiffrée de bout en bout, pour deux. Rien d’autre.</p>
+      <a class="btn" href="#contact"><span class="roll"><span>Suivre le projet</span><span aria-hidden="true">Suivre le projet</span></span></a></div>
+    <!-- Illustration : une brume de points cache un cadenas ; le survol la disperse -->
+    <div class="ac-cloud" data-fade>
+      <canvas role="img" aria-label="Illustration : une brume de points cache un cadenas. Au survol, elle se disperse et le cadenas apparaît : les échanges sont chiffrés de bout en bout, même MG Studio ne peut pas les lire."></canvas>
+      <p class="ac-hint" aria-hidden="true"><span class="ac-fine">Survolez la brume</span><span class="ac-touch">Touchez la brume</span></p>
+      <p class="ac-msg">Chiffré de bout en bout. Même nous ne pouvons rien lire de vos échanges.</p>
+    </div>
+    <h2 class="giant" data-split>Accord</h2>
+  </section>
+
+  <section id="atelier">
+    <p class="kicker" style="font-size:14px;margin-bottom:40px">Atelier</p>
+    <h2 data-reveal>Une seule personne,<br>du croquis au code.</h2>
+    <p class="chapeau">Mathias dessine les écrans, écrit le code et met en ligne. Vous parlez directement à la personne qui fait.</p>
+    <div class="services">
+      <div><h4>Design UX/UI</h4><p>Parcours, maquettes et prototypes prêts à être codés.</p></div>
+      <div><h4>Sites web sur mesure</h4><p>Construits avec l’IA, livrés vite, sans gestionnaire imposé.</p></div>
+      <div><h4>Applications natives</h4><p>macOS et iOS en Swift, Android en Kotlin.</p></div>
+    </div>
+    <p class="refs">Réalisations : Seb Auto Moto École · Action Motors School</p>
+  </section>
+
+  <section id="contact" data-fx="write">
+    <div class="grid">
+      <h2 class="giant" data-split>Écrivez-<br>nous.</h2>
+      <div class="side"><p>Un produit, un site, une app ou une mission : Mathias vous répond sous 24 heures ouvrées.</p>
+        <a class="btn light" href="mailto:contact@mg-studio.dev"><span class="roll"><span>Écrire à Mathias</span><span aria-hidden="true">Écrire à Mathias</span></span></a>
+        <!-- Adresse à confirmer avant mise en ligne (voir README) -->
+        <a class="mail" href="mailto:contact@mg-studio.dev">contact@mg-studio.dev</a></div>
+    </div>
+    <footer><span class="foot-brand"><svg viewBox="0 0 128 128" aria-hidden="true" focusable="false"><use href="#mg-stamp"/></svg>MG Studio · Perpignan · © 2026</span><span>Pulse · Limitless · Accord · Mentions légales · Confidentialité : zéro traceur</span></footer>
+  </section>
+</main>
+
+<script src="assets/js/gsap.min.js" integrity="sha384-3vCAhD+a3BOliP3QqjQINn6ZWiZxoqu0WFxX5ZQZgqekDZuSb1mJBrrLMmu94H8f" defer></script>
+<script src="assets/js/ScrollTrigger.min.js" integrity="sha384-H2WL1iy/jKQQ7MTHU2hskZKNHTYWWD/KgKE1vCNnaWY8An2ESTh23KN/fTp8XS3j" defer></script>
+<script src="assets/js/SplitText.min.js" integrity="sha384-e98MX/fxZrUXA/6T+aCptryLfHgR2FpEmWxDbbPloHT0Qg79dEXKdLJ/iwD2lzxs" defer></script>
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+// Symbole Pupille (soleil percé d’une fente à 45°) : soleil du hero et marque de Limitless
+type Props = HTMLAttributes<"svg"> & { fill?: string };
+
+const { fill, ...attrs } = Astro.props;
+---
+
+<svg viewBox="0 0 600 600" aria-hidden="true" {...attrs}>
+  <path
+    fill={fill}
+    fill-rule="evenodd"
+    d="M300 0A300 300 0 1 1 300 600A300 300 0 1 1 300 0ZM391.88 497.94L497.94 391.88A75 75 0 0 0 391.88 285.81L285.81 391.88A75 75 0 0 0 391.88 497.94Z"
+  ></path>
+</svg>
