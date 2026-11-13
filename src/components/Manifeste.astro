@@ -25,7 +25,7 @@ const words = [
     Manifeste
   </p>
   {words.map((w, i) => (
-    <div class:list={["word", { right: i % 2 === 1 }]} data-fx={w.fx}>
+    <div class:list={["word", { right: i % 2 === 1 }]} data-fx={w.fx} data-fit>
       <h3 class="giant" data-split>
         {w.title}
       </h3>

@@ -193,6 +193,12 @@ section {
   position: relative;
   z-index: 2;
 }
+/* Le texte et le bouton passent devant le soleil (en mobile, il remonte jusqu'à eux) */
+#hero .lead,
+#hero .btn {
+  position: relative;
+  z-index: 2;
+}
 #hero .lead {
   max-width: 620px;
   font-size: 26px;
