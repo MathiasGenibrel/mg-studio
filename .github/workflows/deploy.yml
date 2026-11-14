@@ -1,6 +1,8 @@
 # MG Studio · construit l'image du site et la déploie sur le VPS à chaque push sur main.
 # L'image part directement par SSH (pas de registre) vers l'utilisateur « deploy », dont la clé ne peut
 # que lancer deploy/server/mg-deploy-site. Nginx Proxy Manager n'est jamais touché.
+# SSH n'est pas ouvert au public : le runner rejoint d'abord le VPN NetBird (pair éphémère du groupe « ci »,
+# qui n'a droit qu'au port 22 du serveur), puis le quitte à la fin.
 name: Déploiement
 
 on:
@@ -49,6 +51,26 @@ jobs:
           docker save "mg-studio-site:${GITHUB_SHA}" | gzip -1 > image.tar.gz
           ls -lh image.tar.gz
 
+      - name: Rejoindre le VPN NetBird
+        env:
+          NETBIRD_SETUP_KEY: ${{ secrets.NETBIRD_SETUP_KEY }}
+          DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+        run: |
+          curl -fsSL https://pkgs.netbird.io/debian/public.key | sudo gpg --dearmor -o /usr/share/keyrings/netbird-archive-keyring.gpg
+          echo 'deb [signed-by=/usr/share/keyrings/netbird-archive-keyring.gpg] https://pkgs.netbird.io/debian stable main' \
+            | sudo tee /etc/apt/sources.list.d/netbird.list > /dev/null
+          sudo apt-get update -q > /dev/null
+          sudo apt-get install -y -q netbird > /dev/null
+          netbird version
+          sudo netbird up --setup-key "$NETBIRD_SETUP_KEY" --hostname "gh-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          for i in $(seq 1 30); do
+            if nc -z -w 3 "$DEPLOY_HOST" 22; then echo "✓ serveur joignable par NetBird"; exit 0; fi
+            sleep 2
+          done
+          sudo netbird status -d
+          echo "::error::Le serveur n'est pas joignable par NetBird (règle « ci → servers », port 22 ?)"
+          exit 1
+
       - name: Clé SSH de déploiement
         env:
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
@@ -77,6 +99,8 @@ jobs:
           echo "::error::https://mg-studio.dev ne répond pas 200. Le conteneur est en ligne sur le VPS : vérifier l'hôte mg-studio.dev dans Nginx Proxy Manager."
           exit 1
 
-      - name: Effacer la clé
+      - name: Effacer la clé et quitter le VPN
         if: always()
-        run: rm -f ~/.ssh/deploy
+        run: |
+          rm -f ~/.ssh/deploy
+          sudo netbird down || true
