@@ -46,9 +46,10 @@
 html {
   background: var(--sun);
 }
-/* Ancres : défilement fluide, sauf en mouvement réduit */
+/* Ancres : défilement fluide, sauf en mouvement réduit. Classe posée après le chargement (Base.astro) pour que la
+   restauration du défilement au retour arrière reste instantanée */
 @media (prefers-reduced-motion: no-preference) {
-  html {
+  html.smooth {
     scroll-behavior: smooth;
   }
 }

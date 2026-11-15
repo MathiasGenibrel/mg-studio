@@ -62,11 +62,21 @@ const ogImage = new URL("/og.png", Astro.site).href;
       crossorigin
     />
     <!-- Cache les grands mots avant leur découpage ; retiré au bout de 3 s si les scripts ne se chargent pas -->
+
     <script is:inline>
       document.documentElement.classList.add("js");
       setTimeout(function () {
         document.documentElement.classList.remove("js");
       }, 3000);
+      // Défilement fluide des ancres (html.smooth, site.css) seulement une fois la page chargée : actif dès le départ,
+      // il fait aussi défiler en douceur la restauration du défilement au retour arrière, que la mise à jour de
+      // ScrollTrigger interrompt en route. La page revenait près du haut, et la transition de vue animait le titre
+      // du service (view-transition-name: sv-<slug>) vers un endroit hors de l'écran.
+      addEventListener("load", function () {
+        setTimeout(function () {
+          document.documentElement.classList.add("smooth");
+        });
+      });
     </script>
   </head>
   <!-- id="top" : cible du lien « Haut de page » du pied -->
