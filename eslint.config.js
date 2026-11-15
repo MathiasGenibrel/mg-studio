@@ -11,7 +11,10 @@ export default defineConfig(
   tseslint.configs.recommended,
   astro.configs.recommended,
   { languageOptions: { globals: { ...globals.browser } } },
-  { files: ["*.config.{js,ts}"], languageOptions: { globals: { ...globals.node } } },
+  {
+    files: ["*.config.{js,ts}", "deploy/**/*.mjs"],
+    languageOptions: { globals: { ...globals.node } },
+  },
   // En dernier : désactive les règles de style qui contrediraient Prettier
   prettier,
 );

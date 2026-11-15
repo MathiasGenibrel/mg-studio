@@ -18,6 +18,8 @@ const canonical = noindex ? null : new URL(Astro.url.pathname, Astro.site).href;
 const graph = noindex
   ? null
   : { "@context": "https://schema.org", "@graph": [...siteGraph(), ...jsonLd] };
+// Visuel de partage (public/og.png, 1200 × 630) : reprend le hero
+const ogImage = new URL("/og.png", Astro.site).href;
 ---
 
 <!doctype html>
@@ -38,9 +40,20 @@ const graph = noindex
     )}
     <meta name="theme-color" content="#FFC22E" />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MG Studio" />
+    <meta property="og:locale" content="fr_FR" />
     <meta property="og:title" content={ogTitle} />
     <meta property="og:description" content={ogDescription} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="MG Studio · Pour l’humain. Design, sites web et apps à Perpignan."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link
       rel="preload"
       href="/fonts/bricolage-latin.woff2"

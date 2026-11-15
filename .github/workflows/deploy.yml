@@ -9,6 +9,9 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Chaque 1er janvier : l'année du © (calculée au build) passe à la nouvelle année
+  schedule:
+    - cron: "0 6 1 1 *"
 
 permissions:
   contents: read
@@ -40,8 +43,10 @@ jobs:
           corepack enable
           pnpm install --frozen-lockfile
 
-      - name: Lint
-        run: pnpm lint
+      - name: Lint et formatage
+        run: |
+          pnpm lint
+          pnpm format:check
 
       - name: Image Docker (astro check et build inclus)
         run: docker build --pull -t "mg-studio-site:${GITHUB_SHA}" .

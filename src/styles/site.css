@@ -88,7 +88,6 @@ section {
     "wght" var(--w),
     "wdth" var(--d),
     "opsz" 96;
-  will-change: transform;
 }
 
 .nav {
@@ -156,7 +155,6 @@ section {
   text-decoration: none;
   background: var(--ink);
   color: var(--sun);
-  will-change: transform;
 }
 .btn.light {
   background: var(--on-color);

@@ -14,6 +14,8 @@ FROM nginx:1.30.6-alpine
 # La config par défaut est remplacée ; sans elle, le script IPv6 de l'image n'a rien à modifier (système de fichiers en lecture seule)
 RUN rm /etc/nginx/conf.d/default.conf
 COPY deploy/nginx/site.conf /etc/nginx/conf.d/site.conf
+# Une config invalide fait échouer le build en CI plutôt que le conteneur sur le VPS
+RUN nginx -t
 COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 80
 HEALTHCHECK --interval=30s --timeout=3s --retries=3 CMD wget -q -O /dev/null http://127.0.0.1/ || exit 1
