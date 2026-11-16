@@ -311,11 +311,17 @@ section {
   font-size: 14px;
   font-weight: 500;
 }
+/* Texte et bouton centrés sur la hauteur de la bande (maquette : bloc à mi-hauteur des 640 px) */
 .band .copy {
   position: absolute;
   left: 66.6%;
-  top: 72px;
+  top: 0;
+  bottom: 0;
   max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 }
 .band .copy p {
   font-size: 26px;
@@ -345,6 +351,36 @@ section {
 } /* en largeur 75, l’interlettrage serré fait se toucher les lettres : des filets de fond apparaissaient aux jointures */
 #limitless h2 .char {
   --d: 75;
+}
+/* Limitless en miroir sur desktop : texte à gauche, visuel et nom à droite, pour une lecture en Z entre les trois bandes.
+   Le texte garde la colonne de Pulse et Accord retournée : il s’arrête au tiers de la largeur */
+@media (min-width: 901px) {
+  #limitless .meta {
+    text-align: right;
+  }
+  #limitless .copy {
+    left: 64px;
+    max-width: min(420px, calc(33.4% - 64px));
+  }
+  /* La barre (55,7 em de large) rétrécit avant de toucher la colonne de texte : 40 px d’écart au moins */
+  #limitless .lt-menubar {
+    left: auto;
+    right: 64px;
+    font-size: min(12.8px, (66.6vw - 104px) / 55.7);
+  }
+  #limitless .lt-strip,
+  #limitless .lt-cap {
+    margin-left: auto;
+  }
+  #limitless .lt-cap {
+    text-align: right;
+    max-width: none;
+    font-size: max(1.1em, 11px);
+  }
+  #limitless h2 {
+    left: auto;
+    right: 40px;
+  }
 }
 /* Bande Pulse : classement des apps les plus gourmandes (à 0,8 de la maquette).
    Unités en em : 1 em = 12,8 px à 1440 px de large (16 px de la maquette × 0,8) */
