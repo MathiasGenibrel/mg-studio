@@ -1,10 +1,12 @@
 ---
 import Button from "../components/Button.astro";
 import LogoSprite from "../components/LogoSprite.astro";
+import Pupil from "../components/Pupil.astro";
 import Base from "../layouts/Base.astro";
 import { EMAIL, PERSON, PHONE } from "../site";
 
-// Maquette Figma « Carte — Mobile / Desktop » : la page du QR de la carte papier. On retourne la carte : verso rouge, puis recto.
+// La page du QR de la carte papier (Figma, page « 🪪 Cartes de visite », proposition E « Le hero en poche »).
+// On retourne la carte : verso soleil (« Pour l’humain. » en grand, soleil rouge), puis recto (coordonnées en encre sur soleil).
 // Pas de bouton Apple Wallet (décision du 9 novembre 2026), pas de script : la page doit s’afficher tout de suite
 const year = new Date().getFullYear();
 const rows = [
@@ -30,10 +32,16 @@ const rows = [
           <use href="#mg-lockup"></use>
         </svg>
       </a>
-      <p class="cp-motto">Pour l’humain.</p>
+      <p class="cp-motto">
+        Pour
+        <br />
+        l’humain.
+      </p>
+      <Pupil class="cp-sun" />
     </header>
 
     <div class="cp-recto">
+      <span class="cp-echo" aria-hidden="true"></span>
       <div class="cp-main">
         <h1>
           {PERSON.given} {PERSON.family}

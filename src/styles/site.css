@@ -1527,44 +1527,80 @@ body:has(.lost) {
 }
 
 /* ---------- Carte (/carte) : la page du QR de la carte papier ---------- */
+/* Les deux faces de la carte « Le hero en poche » : tout sur soleil, comme le site */
 .card-page {
   display: grid;
   grid-template-columns: 1fr 1fr;
   min-height: 100vh;
   min-height: 100svh;
-  background: var(--cream);
+  background: var(--sun);
+  color: var(--ink);
+  overflow: hidden;
 }
+/* Verso : logo en haut, « Pour l’humain. » en grand en bas, soleil rouge qui se lève derrière les lettres.
+   En desktop le soleil n’est coupé que par le bas de la page : les deux colonnes partagent le même fond */
 .cp-verso {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 72px;
   padding: 64px;
-  background: var(--blood);
-  color: var(--on-color);
 }
 .cp-logo {
+  position: relative;
+  z-index: 2;
   display: block;
   width: max-content;
-  color: var(--on-color);
 }
 .cp-logo svg {
   display: block;
-  height: 160px;
-  width: calc(160px * 295 / 128);
+  height: 56px;
+  width: calc(56px * 295 / 128);
   fill: currentColor;
 }
+/* Réglages du hero ; « l’humain. » mesure 3,72 em : le corps suit la largeur de la colonne */
 .cp-motto {
-  font-size: 26px;
-  line-height: 1.28;
-  font-weight: 500;
-  letter-spacing: -0.01em;
+  position: relative;
+  z-index: 2;
+  font-size: min(220px, (50vw - 128px) / 3.8);
+  font-weight: 800;
+  font-variation-settings: "opsz" 96;
+  line-height: 0.82;
+  letter-spacing: -0.035em;
+  white-space: nowrap;
+}
+/* Deux tiers de la largeur, comme sur la carte ; il déborde en bas et à peine dans la marge du recto */
+.cp-sun {
+  position: absolute;
+  right: -5%;
+  bottom: 0;
+  z-index: 1;
+  width: 66%;
+  height: auto;
+  transform: translateY(38%);
+}
+.cp-sun path {
+  fill: var(--blood);
 }
 .cp-recto {
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 48px;
   padding: 96px 96px 48px;
+}
+/* Quart de soleil en haut à droite du recto, en écho au verso */
+.cp-echo {
+  position: absolute;
+  top: -170px;
+  right: -110px;
+  width: 300px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--blood);
 }
 .cp-main,
 .cp-foot {
@@ -1573,7 +1609,7 @@ body:has(.lost) {
 .cp-main h1 {
   font-size: 56px;
   line-height: 1;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: -0.03em;
 }
 .cp-status {
@@ -1582,10 +1618,8 @@ body:has(.lost) {
   line-height: 1.3;
   font-weight: 500;
 }
-/* Rouge sang sur crème : 4,3:1, réservé au texte gras de 20 px (grand texte, seuil 3:1) */
 .cp-craft {
   margin-top: 16px;
-  color: var(--blood);
   font-size: 20px;
   line-height: 1.2;
   font-weight: 700;
@@ -1670,16 +1704,19 @@ a.cp-row:hover .cp-arrow {
     grid-template-rows: auto 1fr;
   }
   .cp-verso {
-    height: 300px;
-    padding: 64px 20px 28px;
+    overflow: hidden;
+    gap: 64px;
+    padding: 28px 20px 32px;
   }
   .cp-logo svg {
-    height: 96px;
-    width: calc(96px * 295 / 128);
+    height: 44px;
+    width: calc(44px * 295 / 128);
   }
   .cp-motto {
-    font-size: 20px;
-    letter-spacing: 0;
+    font-size: calc((100vw - 40px) / 3.8);
+  }
+  .cp-echo {
+    display: none;
   }
   .cp-recto {
     gap: 0;
