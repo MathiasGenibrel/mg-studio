@@ -23,19 +23,23 @@ import Base from "../layouts/Base.astro";
 
   <main id="main" class="lost">
     <!-- La fente suit le pointeur, puis revient vers le titre au repos (src/scripts/page.ts) -->
-    <div class="lost-sun">
+    <div class="lost-sun" data-intro="sun">
       <Pupil id="lost-sun" />
     </div>
     <div class="lost-body">
-      <p class="lost-code">Erreur 404</p>
-      <h1>
+      <p class="lost-code" data-intro>
+        Erreur 404
+      </p>
+      <h1 data-intro="title">
         Cette page
         <br />
         s’est couchée.
       </h1>
-      <p class="lost-lead">Elle n’existe pas, ou plus. Le reste du site, lui, est bien levé.</p>
-      <Button href="/" label="Retour à l’accueil" cream />
-      <nav class="lost-links" aria-labelledby="lost-links-title">
+      <p class="lost-lead" data-intro>
+        Elle n’existe pas, ou plus. Le reste du site, lui, est bien levé.
+      </p>
+      <Button href="/" label="Retour à l’accueil" cream data-intro />
+      <nav class="lost-links" aria-labelledby="lost-links-title" data-intro>
         <p id="lost-links-title">
           <span class="lost-d">Ou filez vers :</span>
           <span class="lost-m">Ou :</span>

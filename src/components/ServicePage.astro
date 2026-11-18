@@ -35,22 +35,28 @@ const others = services.filter((x) => x.slug !== s.slug);
 
   <main id="main" class="service">
     <section class="sv-head">
-      <a class="sv-back ul" href="/#atelier">
+      <a class="sv-back ul" href="/#atelier" data-intro>
         ← L’atelier
       </a>
       <div class="sv-row">
         <div>
-          <p class="sv-rank">Atelier · service {s.rank}</p>
-          <h1 style={`view-transition-name: sv-${s.slug}`}>
+          <p class="sv-rank" data-intro>
+            Atelier · service {s.rank}
+          </p>
+          <h1 data-intro="title">
             {s.title[0]}
             <br />
             {s.title[1]}
           </h1>
         </div>
         <div class="sv-side">
-          <p class="sv-lead">{s.lead}</p>
-          <Button href="#contact" label="Écrire à Mathias" />
-          <p class="sv-note">Sur devis. Réponse sous 24 heures ouvrées.</p>
+          <p class="sv-lead" data-intro>
+            {s.lead}
+          </p>
+          <Button href="#contact" label="Écrire à Mathias" data-intro />
+          <p class="sv-note" data-intro>
+            Sur devis. Réponse sous 24 heures ouvrées.
+          </p>
         </div>
       </div>
     </section>
@@ -142,7 +148,7 @@ const others = services.filter((x) => x.slug !== s.slug);
           <li>
             <a href={`/${o.slug}/`}>
               <span class="sv-o-text">
-                <span class="sv-o-name" style={`view-transition-name: sv-${o.slug}`}>
+                <span class="sv-o-name">
                   <span class="ul">{o.name}.</span>
                 </span>
                 <span class="sv-o-teaser">{o.teaser}</span>

@@ -5,7 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { clipDuring, magneticButtons, navAutoHide, wordFx } from "./common";
 import { M } from "./motion";
-import { blockReveals, lineReveals, seen } from "./reveal";
+import { blockReveals, lineReveals, pageIntro, seen } from "./reveal";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -54,6 +54,8 @@ if (tocLinks.length) {
 
 /* ---------- Grands mots (services : Dessiner., Effacer., Donner. ; contact : Écrivez-moi.) ---------- */
 void document.fonts.ready.then(() => {
+  // Plus de 3 s : Base.astro a déjà retiré .js, l'en-tête est affiché au repos (pageIntro ne le rejoue pas)
+  const late = !document.documentElement.classList.contains("js");
   const splits = new Map<Element, SplitText>();
   document.querySelectorAll("[data-split]").forEach((el) => {
     splits.set(
@@ -78,6 +80,7 @@ void document.fonts.ready.then(() => {
     },
     (ctx) => {
       const { full = false, pointer = false } = ctx.conditions ?? {};
+      pageIntro(!full, late);
       if (!full) {
         lineReveals(true);
         return blockReveals(true); // mouvement réduit : fondus seuls, les grands mots restent immobiles

@@ -781,12 +781,14 @@ section {
   }
 }
 
-/* Avant que GSAP ait posé leur état de départ, les grands mots, le soleil du hero, le chapeau et le bouton du hero
-   restent cachés (évite le saut au démarrage). La classe .js est retirée au bout de 3 s si les scripts ne se chargent
+/* Avant que GSAP ait posé leur état de départ, les grands mots, le soleil du hero, le chapeau et le bouton du hero,
+   et l'en-tête des autres pages (data-intro) restent cachés (évite le saut au démarrage). La classe .js est retirée au bout de 3 s si les scripts ne se chargent
    pas : le texte reste lisible sans JS */
 .js [data-split],
 .js #sun,
-.js #hero [data-fade] {
+.js #hero [data-fade],
+.js [data-intro],
+.js [data-intro-stagger] > * {
   visibility: hidden;
 }
 .skip {
@@ -2282,64 +2284,11 @@ a.ul:focus-visible {
   }
 }
 
-/* ---------- Transitions entre les pages (transitions de vue entre documents, sans script) ----------
-   La navigation reste en place ; le contenu glisse en fondu ; le titre d’un service passe de la section Atelier
-   (ou des liens « autres services ») au titre de sa page (view-transition-name: sv-<slug>).
-   Navigateurs sans prise en charge : navigation classique */
-@view-transition {
-  navigation: auto;
-}
-.nav {
-  view-transition-name: nav;
-}
-::view-transition-group(*) {
-  animation-duration: 0.55s;
-  animation-timing-function: var(--ease-out);
-}
-::view-transition-old(root) {
-  animation: vt-out 0.25s ease-in both;
-}
-::view-transition-new(root) {
-  animation: vt-in 0.5s var(--ease-out) both;
-}
-@keyframes vt-out {
-  to {
-    opacity: 0;
-    transform: translateY(-12px);
-  }
-}
-@keyframes vt-in {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-}
-/* Mouvement réduit : un simple fondu, sans glissement ni morphose */
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-group(*) {
-    animation: none;
-  }
-  ::view-transition-old(root) {
-    animation: vt-fade-out 0.2s linear both;
-  }
-  ::view-transition-new(root) {
-    animation: vt-fade-in 0.2s linear both;
-  }
-  @keyframes vt-fade-out {
-    to {
-      opacity: 0;
-    }
-  }
-  @keyframes vt-fade-in {
-    from {
-      opacity: 0;
-    }
-  }
-}
-
 /* Impression / PDF : les apparitions au scroll (reveal.ts, main.ts, page.ts) laissent opacité, décalage et masque
    inline sur ce qui n'a pas encore défilé ; tout est rendu à l'état de repos */
 @media print {
+  [data-intro],
+  [data-intro-stagger] > *,
   [data-in],
   [data-in-stagger] > *,
   [data-reveal],

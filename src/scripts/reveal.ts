@@ -1,7 +1,8 @@
-/* MG Studio · apparitions au scroll partagées (accueil, services, pages légales).
-   Balisage : [data-in] (un bloc), [data-in-stagger] (ses enfants directs, l'un après l'autre), [data-reveal] (titre :
-   lignes qui montent derrière un masque). Jamais sur un élément porteur de view-transition-name ni sur l'un de ses
-   parents, ni sur un .btn (l'aimant pilote x/y), ni sur un élément dont le transform a une transition CSS.
+/* MG Studio · apparitions partagées (accueil, services, pages légales, 404).
+   Au scroll : [data-in] (un bloc), [data-in-stagger] (ses enfants directs, l'un après l'autre), [data-reveal] (titre :
+   lignes qui montent derrière un masque). Jamais sur un .btn (l'aimant pilote x/y), ni sur un élément dont le
+   transform a une transition CSS.
+   À l'arrivée (en-tête des pages autres que l'accueil) : [data-intro], [data-intro-stagger], voir pageIntro.
    Rien n'est caché par le CSS : l'état de départ est posé ici, et ce qui est déjà à l'écran à l'initialisation
    (haut de page, retour arrière, ancre, cible d'une transition de vue) reste tel quel */
 import { gsap } from "gsap";
@@ -121,5 +122,53 @@ export function lineReveals(reduced: boolean): void {
         return clipDuring(el, tween);
       },
     });
+  });
+}
+
+/** En-tête des pages autres que l'accueil, joué à l'arrivée : le titre (data-intro="title") monte ligne par ligne
+    derrière un masque, le soleil de la 404 (data-intro="sun") se lève, le reste ([data-intro], enfants de
+    [data-intro-stagger]) suit en fondu montant, dans l'ordre du document. Caché par le CSS tant que .js est là
+    (site.css) : à appeler avant que page.ts ne retire .js. `late` : .js déjà retiré (polices lentes, plus de 3 s),
+    l'en-tête est affiché au repos et n'est pas rejoué */
+let introPlayed = false;
+export function pageIntro(reduced: boolean, late: boolean): void {
+  // Une fois par page : gsap.matchMedia rejoue sa fonction si une condition change (trackpad, mouvement réduit)
+  if (introPlayed) return;
+  introPlayed = true;
+  const title = document.querySelector<HTMLElement>('[data-intro="title"]');
+  const sun = document.querySelector<HTMLElement>('[data-intro="sun"]');
+  const items = gsap.utils
+    .toArray<HTMLElement>("[data-intro], [data-intro-stagger] > *")
+    .filter((el) => el !== title && el !== sun);
+  if (late || (!title && !sun && !items.length)) return;
+  const all = [title, sun, ...items].filter((el): el is HTMLElement => !!el);
+
+  if (reduced) {
+    gsap.from(all, { opacity: 0, duration: 0.2, ease: "none" });
+    return;
+  }
+
+  const tl = gsap.timeline({ defaults: { ease: M.out } });
+  if (title) {
+    const s = SplitText.create(title, {
+      type: "lines",
+      linesClass: "line",
+      mask: "lines",
+      aria: "auto",
+    });
+    tl.from(s.lines, { yPercent: 105, duration: M.expressive, stagger: 0.1 }, 0.05);
+    // Découpage retiré à la fin : pas de lignes figées après une rotation ou un redimensionnement
+    void clipDuring(title, tl).then(() => s.revert());
+  }
+  // Le soleil part du bas (la 404 : « s'est couchée ») ; sur son conteneur, le SVG est tourné par le pointeur
+  if (sun) tl.from(sun, { yPercent: 18, opacity: 0, duration: 1.4 }, 0);
+  // Fondu montant ; les boutons en fondu seul (l'aimant pilote leur x/y)
+  items.forEach((el, i) => {
+    const btn = el.classList.contains("btn");
+    tl.from(
+      el,
+      { opacity: 0, y: btn ? 0 : 16, duration: M.body, clearProps: "opacity,transform" },
+      0.15 + i * 0.06,
+    );
   });
 }
