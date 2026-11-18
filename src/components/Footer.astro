@@ -47,7 +47,7 @@ const columns = [
 ---
 
 <footer class="site-foot">
-  <div class="sf-head">
+  <div class="sf-head" data-in-stagger>
     <div class="sf-sign">
       <svg class="sf-logo" viewBox="0 0 128 128" aria-hidden="true" focusable="false">
         <use href="#mg-stamp"></use>
@@ -70,7 +70,7 @@ const columns = [
     </div>
   </div>
 
-  <nav class="sf-index" aria-label="Pied de page">
+  <nav class="sf-index" aria-label="Pied de page" data-in-stagger>
     {columns.map((c) => (
       <div class:list={["sf-col", c.id]}>
         <p class="sf-label" id={c.id}>
@@ -103,7 +103,7 @@ const columns = [
     </div>
   </nav>
 
-  <div class="sf-bottom">
+  <div class="sf-bottom" data-in>
     <p>© {year} MG Studio</p>
     <p lang="ca">Fet amb cura a Perpinyà.</p>
   </div>

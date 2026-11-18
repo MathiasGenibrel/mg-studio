@@ -3,7 +3,9 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
-import { magneticButtons, navAutoHide, wordFx } from "./common";
+import { clipDuring, magneticButtons, navAutoHide, wordFx } from "./common";
+import { M } from "./motion";
+import { blockReveals, lineReveals, seen } from "./reveal";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -14,6 +16,15 @@ if (window.matchMedia("(max-width: 900px)").matches)
   document.querySelectorAll<HTMLDetailsElement>(".sv-qs details").forEach((d) => {
     d.open = false;
   });
+
+/* Ouvrir ou fermer une question change la hauteur de la page : on recalcule les déclencheurs situés plus bas */
+let refreshFrame = 0;
+document.querySelectorAll<HTMLDetailsElement>(".sv-qs details").forEach((d) => {
+  d.addEventListener("toggle", () => {
+    cancelAnimationFrame(refreshFrame);
+    refreshFrame = requestAnimationFrame(() => ScrollTrigger.refresh());
+  });
+});
 
 /* ---------- Mentions légales et vie privée : le repère rouge suit la section lue ---------- */
 const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>(".lg-toc a")];
@@ -62,15 +73,52 @@ void document.fonts.ready.then(() => {
   mm.add(
     {
       full: "(prefers-reduced-motion: no-preference)",
+      reduced: "(prefers-reduced-motion: reduce)",
       pointer: "(hover: hover) and (pointer: fine)",
     },
     (ctx) => {
       const { full = false, pointer = false } = ctx.conditions ?? {};
-      if (!full) return; // mouvement réduit : les mots restent immobiles
+      if (!full) {
+        lineReveals(true);
+        return blockReveals(true); // mouvement réduit : fondus seuls, les grands mots restent immobiles
+      }
+      /* Grands mots : les lettres montent à l'arrivée, comme « Écrivez-moi. » sur l'accueil (yPercent seul pour le
+         verbe : ses effets pilotent --w, --fill, scale et x) */
+      const rise = (
+        h: HTMLElement | null,
+        vars: gsap.TweenVars,
+        trigger: Element | string,
+        start: string,
+      ): void => {
+        if (!h || seen(h)) return;
+        clipDuring(
+          h,
+          gsap.from(chars(h), {
+            yPercent: 110,
+            duration: M.expressive,
+            ease: M.out,
+            stagger: 0.03,
+            ...vars,
+            scrollTrigger: { trigger, start, once: true },
+          }),
+        );
+      };
+      const verb = document.querySelector<HTMLElement>("#sv-verb");
+      rise(verb, {}, verb ?? "body", "top 90%"); // avant le jeu tactile du mot (« top 75% »)
+      rise(
+        document.querySelector<HTMLElement>("#contact h2"),
+        { "--w": 200 },
+        "#contact",
+        "top 65%",
+      );
       document.querySelectorAll<HTMLElement>("[data-fx]").forEach((host) => {
         wordFx(host, chars, pointer);
       });
+      if (!pointer) ScrollTrigger.refresh(); // tactile : les mots data-fit ont pris leur taille finale
       if (pointer) magneticButtons();
+      // Apparitions en dernier : si une étape plus haut échoue, rien ne reste caché
+      lineReveals(false);
+      return blockReveals(false);
     },
   );
   // Découpés : on peut les montrer (voir .js [data-split] dans site.css)

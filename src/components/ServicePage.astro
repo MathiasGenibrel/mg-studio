@@ -57,18 +57,26 @@ const others = services.filter((x) => x.slug !== s.slug);
 
     <section class="sv-word" aria-labelledby="sv-verb">
       <div class="sv-verb" data-fx={s.fx} data-fit>
-        <p class="sv-kicker">Manifeste</p>
+        <p class="sv-kicker" data-in>
+          Manifeste
+        </p>
         <h2 class="giant" id="sv-verb" data-split>
           {s.verb}
         </h2>
-        <p class="sv-phrase">{s.phrase}</p>
+        <p class="sv-phrase" data-in>
+          {s.phrase}
+        </p>
       </div>
-      <p class="sv-brief">{s.brief}</p>
+      <p class="sv-brief" data-in>
+        {s.brief}
+      </p>
     </section>
 
     <section class="sv-block sv-deliver" aria-labelledby="sv-deliver">
-      <h2 id="sv-deliver">Ce que vous recevez.</h2>
-      <ul class="sv-grid">
+      <h2 id="sv-deliver" data-reveal>
+        Ce que vous recevez.
+      </h2>
+      <ul class="sv-grid" data-in-stagger>
         {s.deliverables.map(([t, x]) => (
           <li>
             <h3>{t}</h3>
@@ -79,8 +87,10 @@ const others = services.filter((x) => x.slug !== s.slug);
     </section>
 
     <section class="sv-block sv-steps" aria-labelledby="sv-steps">
-      <h2 id="sv-steps">Comment ça se passe.</h2>
-      <ol>
+      <h2 id="sv-steps" data-reveal>
+        Comment ça se passe.
+      </h2>
+      <ol data-in-stagger>
         {s.steps.map(([t, x], i) => (
           <li>
             <span class="sv-num" aria-hidden="true">
@@ -94,8 +104,10 @@ const others = services.filter((x) => x.slug !== s.slug);
     </section>
 
     <section class="sv-block sv-work" aria-labelledby="sv-work">
-      <h2 id="sv-work">{s.workTitle}</h2>
-      <ul class:list={["sv-cards", `n${s.work.length}`]}>
+      <h2 id="sv-work" data-reveal>
+        {s.workTitle}
+      </h2>
+      <ul class:list={["sv-cards", `n${s.work.length}`]} data-in-stagger>
         {s.work.map((w) => (
           <li>
             <h3 class:list={["sv-card", w.tone]}>{w.name}</h3>
@@ -107,11 +119,11 @@ const others = services.filter((x) => x.slug !== s.slug);
     </section>
 
     <section class="sv-block sv-faq" aria-labelledby="sv-faq">
-      <h2 id="sv-faq">
+      <h2 id="sv-faq" data-reveal>
         Questions <br />
         fréquentes.
       </h2>
-      <div class="sv-qs">
+      <div class="sv-qs" data-in-stagger>
         {s.faq.map(([q, a]) => (
           <details open>
             <summary>{q}</summary>
@@ -122,7 +134,9 @@ const others = services.filter((x) => x.slug !== s.slug);
     </section>
 
     <nav class="sv-others" aria-labelledby="sv-others">
-      <p id="sv-others">Les deux autres services</p>
+      <p id="sv-others" data-in>
+        Les deux autres services
+      </p>
       <ul>
         {others.map((o) => (
           <li>

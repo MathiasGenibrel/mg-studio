@@ -42,7 +42,7 @@ const { path, title, description, ogDescription, heading, lead, brief, toc, upda
       </a>
       <h1>{heading}</h1>
       <p class="lg-lead">{lead}</p>
-      <div class="lg-brief">
+      <div class="lg-brief" data-in-stagger>
         {brief.map((b) => (
           <div>
             <p class="lg-q">{b.q}</p>
@@ -54,7 +54,7 @@ const { path, title, description, ogDescription, heading, lead, brief, toc, upda
     </section>
 
     <section class="lg-detail">
-      <nav class="lg-toc" aria-labelledby="lg-toc-title">
+      <nav class="lg-toc" data-in aria-labelledby="lg-toc-title">
         <p id="lg-toc-title">Sommaire</p>
         <ul>
           {toc.map((t, i) => (
@@ -71,7 +71,7 @@ const { path, title, description, ogDescription, heading, lead, brief, toc, upda
         </p>
       </nav>
 
-      <div class="lg-articles">
+      <div class="lg-articles" data-in-stagger>
         <slot />
         <p class="lg-date lg-date-end">
           Mis à jour le <time datetime={updated.iso}>{updated.label}</time>

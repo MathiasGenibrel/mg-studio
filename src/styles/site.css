@@ -218,10 +218,57 @@ section {
   display: block;
   width: 100%;
   height: auto;
-  will-change: transform;
+}
+/* Le SVG ne bouge en continu qu'en suivant la souris : calque permanent seulement là (un seul grand calque sur mobile) */
+@media (hover: hover) and (pointer: fine) {
+  #sun {
+    will-change: transform;
+  }
 }
 #sun path {
   fill: var(--blood);
+}
+/* Défilement : parallaxe du soleil et dérive des noms de bandes jouées par le navigateur (Safari 26+, Chromium 115+),
+   hors du fil principal. Ailleurs, GSAP prend le relais (main.ts §2 et §6, même condition CSS.supports).
+   Timelines nommées : section { overflow: hidden } fait de #hero et .band des conteneurs de défilement, un view()
+   anonyme sur l'enfant s'y lierait et resterait inactif */
+@keyframes sun-drift {
+  from {
+    transform: translateY(0) scale(1);
+  }
+  to {
+    transform: translateY(35%) scale(0.85);
+  }
+}
+@keyframes band-drift {
+  from {
+    transform: translateX(8%);
+  }
+  to {
+    transform: translateX(-8%);
+  }
+}
+@supports (animation-range: exit-crossing 0% exit-crossing 100%) {
+  @media (prefers-reduced-motion: no-preference) {
+    #hero {
+      view-timeline-name: --hero;
+      view-timeline-axis: block;
+    }
+    .sun {
+      animation: sun-drift linear both;
+      animation-timeline: --hero; /* après le raccourci animation, qui le remet à auto */
+      animation-range: exit-crossing 0% exit-crossing 100%; /* = ScrollTrigger « top top » → « bottom top » */
+    }
+    .band {
+      view-timeline-name: --band;
+      view-timeline-axis: block;
+    }
+    .band h2 {
+      animation: band-drift linear both;
+      animation-timeline: --band;
+      animation-range: cover 0% cover 100%; /* = « top bottom » → « bottom top » */
+    }
+  }
 }
 
 #manifeste {
@@ -291,11 +338,18 @@ section {
 }
 [data-fx="draw"] .char::before {
   color: transparent;
-  filter: url(#outline);
-  transition: color 0.25s;
+  filter: none;
+  /* Contour (filtre SVG #outline, calculé par le processeur dans Safari) seulement pendant le dessin :
+     retiré à la fin du fondu de sortie du contour (0,25 s) */
+  transition:
+    color 0.25s,
+    filter 0s 0.25s;
+  transition-behavior: allow-discrete;
 }
 [data-fx="draw"] [data-split].is-drawing .char::before {
   color: var(--cream);
+  filter: url(#outline);
+  transition: color 0.25s; /* à l'entrée : filtre immédiat */
 }
 [data-fx="draw"] .char::after {
   color: var(--cream);
@@ -727,9 +781,12 @@ section {
   }
 }
 
-/* Avant le découpage en lettres, les grands mots restent cachés (évite le saut au démarrage).
-   La classe .js est retirée au bout de 3 s si les scripts ne se chargent pas : le texte reste lisible sans JS */
-.js [data-split] {
+/* Avant que GSAP ait posé leur état de départ, les grands mots, le soleil du hero, le chapeau et le bouton du hero
+   restent cachés (évite le saut au démarrage). La classe .js est retirée au bout de 3 s si les scripts ne se chargent
+   pas : le texte reste lisible sans JS */
+.js [data-split],
+.js #sun,
+.js #hero [data-fade] {
   visibility: hidden;
 }
 .skip {
@@ -1053,8 +1110,10 @@ section {
   font-weight: 600;
   transition: transform 0.35s var(--ease-out);
 }
-.sf-top:hover {
-  transform: translateY(-12px);
+@media (hover: hover) and (pointer: fine) {
+  .sf-top:hover {
+    transform: translateY(-12px);
+  }
 }
 .site-foot .sf-top:focus-visible {
   outline-color: var(--cream);
@@ -1677,8 +1736,10 @@ body:has(.lost) {
   font-weight: 600;
   transition: transform 0.35s var(--ease-out);
 }
-a.cp-row:hover .cp-arrow {
-  transform: translateX(4px);
+@media (hover: hover) and (pointer: fine) {
+  a.cp-row:hover .cp-arrow {
+    transform: translateX(4px);
+  }
 }
 .card-page a:focus-visible {
   outline: 3px solid currentColor;
@@ -2020,8 +2081,10 @@ a.cp-row:hover .cp-arrow {
   font-weight: 600;
   transition: transform 0.35s var(--ease-out);
 }
-.sv-others a:hover .sv-o-arrow {
-  transform: translateX(6px);
+@media (hover: hover) and (pointer: fine) {
+  .sv-others a:hover .sv-o-arrow {
+    transform: translateX(6px);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .sv-o-arrow {
@@ -2193,12 +2256,18 @@ a.cp-row:hover .cp-arrow {
   box-decoration-break: clone;
   transition: background-size 0.35s var(--ease-out);
 }
-a:hover .ul,
 a:focus-visible .ul,
-a.ul:hover,
 a.ul:focus-visible {
   background-position: 0 100%;
   background-size: 100% var(--ul, 1.5px);
+}
+/* Survol réservé aux pointeurs fins : au toucher, iOS garderait le trait après le tap */
+@media (hover: hover) and (pointer: fine) {
+  a:hover .ul,
+  a.ul:hover {
+    background-position: 0 100%;
+    background-size: 100% var(--ul, 1.5px);
+  }
 }
 .services h4 .ul,
 .services h4 a.ul {
@@ -2265,5 +2334,21 @@ a.ul:focus-visible {
     from {
       opacity: 0;
     }
+  }
+}
+
+/* Impression / PDF : les apparitions au scroll (reveal.ts, main.ts, page.ts) laissent opacité, décalage et masque
+   inline sur ce qui n'a pas encore défilé ; tout est rendu à l'état de repos */
+@media print {
+  [data-in],
+  [data-in-stagger] > *,
+  [data-reveal],
+  [data-split] .char,
+  .line {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .line-mask {
+    clip-path: none !important;
   }
 }

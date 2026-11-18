@@ -20,6 +20,14 @@ export function navAutoHide(): void {
   });
 }
 
+/** Masque vertical pendant une apparition, puis libéré pour que les survols puissent déborder */
+export function clipDuring<T extends gsap.core.Animation>(el: Element, tween: T): T {
+  const masks = el.querySelectorAll(".line-mask");
+  gsap.set(masks, { clipPath: "inset(-0.15em -100vw 0 -100vw)" });
+  void tween.then(() => gsap.set(masks, { clipPath: "none" }));
+  return tween;
+}
+
 /* ---------- 8. Boutons : attraction magnétique et libellé qui roule ---------- */
 export function magneticButtons(): void {
   document.querySelectorAll<HTMLElement>(".btn").forEach((b) => {
@@ -76,32 +84,37 @@ function restWidth(h: HTMLElement): number {
   return w;
 }
 
-/** Tactile : le mot (hôte marqué data-fit) grandit jusqu'à occuper toute la largeur de sa section, puis joue son effet.
-    Au repos en vw, il suit ensuite les changements d'orientation. */
-function growToFit(host: HTMLElement, h: HTMLElement, done: () => void): void {
+/** Tactile : la taille finale du mot (hôte marqué data-fit) est posée dès le départ, en vw (elle suit l'orientation),
+    et un scale le ramène à sa taille de repos ; la croissance au scroll ne touche plus la mise en page.
+    Renvoie l'échelle de départ (1 : rien à faire) */
+function fitNow(host: HTMLElement, h: HTMLElement): number {
   const box = host.closest("section") ?? host;
   const bs = getComputedStyle(box);
   const avail = box.clientWidth - parseFloat(bs.paddingLeft) - parseFloat(bs.paddingRight);
   const size = parseFloat(getComputedStyle(h).fontSize);
   const width = restWidth(h);
-  if (!width || !avail) return done();
+  if (!width || !avail) return 1;
   const target = (size * avail * 0.96) / width; // 4 % de marge : certains effets débordent un peu (Donner. s'étire)
-  gsap.to(h, {
-    fontSize: target,
-    duration: M.body,
-    ease: M.out,
-    onComplete: () => {
-      h.style.fontSize = `${(target / window.innerWidth) * 100}vw`;
-      done();
-    },
+  const from = size / target;
+  if (Math.abs(from - 1) < 0.01) return 1;
+  // Mots calés à droite (Dessiner., Donner. : .word.right, align-self: flex-end en mobile) : ils grandissent vers la gauche
+  const right = host.classList.contains("right") || getComputedStyle(h).alignSelf === "flex-end";
+  // Par gsap.set, taille comprise : le contexte gsap.matchMedia la retire s'il est annulé (trackpad branché sur un iPad)
+  gsap.set(h, {
+    fontSize: `${(target / window.innerWidth) * 100}vw`,
+    scale: from,
+    transformOrigin: right ? "100% 50%" : "0% 50%",
   });
+  return from;
 }
 
-/** Branche l’effet du mot (data-fx sur l’hôte, data-split sur le titre) : survol à la souris, joué une fois à l’arrivée au tactile */
+/** Branche l’effet du mot (data-fx sur l’hôte, data-split sur le titre) : survol à la souris, joué une fois à l’arrivée au tactile.
+    `before` (tactile) : une apparition du mot à laisser finir avant sa mise à l'échelle, pour ne pas les superposer */
 export function wordFx(
   host: HTMLElement,
   chars: (el: Element) => HTMLElement[],
   pointer: boolean,
+  before?: gsap.core.Animation,
 ): void {
   const h = host.querySelector<HTMLElement>("[data-split]");
   const make = fx[host.dataset.fx ?? ""];
@@ -137,10 +150,24 @@ export function wordFx(
       });
     } else gsap.delayedCall(1.6, api.leave);
   };
+  const from = host.hasAttribute("data-fit") ? fitNow(host, h) : 1;
   ScrollTrigger.create({
     trigger: h,
     start: "top 75%",
     once: true,
-    onEnter: () => (host.hasAttribute("data-fit") ? growToFit(host, h, play) : play()),
+    onEnter: () => {
+      const grow = (): void => {
+        if (from === 1) return play();
+        gsap.to(h, {
+          scale: 1,
+          duration: M.body,
+          ease: M.out,
+          clearProps: "transform",
+          onComplete: play,
+        });
+      };
+      if (before && before.progress() < 1) void before.then(grow);
+      else grow();
+    },
   });
 }

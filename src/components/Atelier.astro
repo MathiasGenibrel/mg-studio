@@ -23,7 +23,7 @@ const services = [
 ---
 
 <section id="atelier">
-  <p class="kicker" style="font-size:14px;margin-bottom:40px">
+  <p class="kicker" data-in style="font-size:14px;margin-bottom:40px">
     Atelier
   </p>
   <h2 data-reveal>
@@ -31,7 +31,7 @@ const services = [
     <br />
     du croquis au code.
   </h2>
-  <p class="chapeau">
+  <p class="chapeau" data-in>
     Mathias dessine les écrans, écrit le code et met en ligne. Vous parlez directement à la personne
     qui fait.
   </p>
@@ -44,9 +44,11 @@ const services = [
             <span aria-hidden="true">→</span>
           </a>
         </h4>
-        <p>{s.text}</p>
+        <p data-in>{s.text}</p>
       </div>
     ))}
   </div>
-  <p class="refs">Réalisations : Seb Auto Moto École · Action Motors School</p>
+  <p class="refs" data-in>
+    Réalisations : Seb Auto Moto École · Action Motors School
+  </p>
 </section>

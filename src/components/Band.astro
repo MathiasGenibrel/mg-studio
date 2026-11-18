@@ -15,8 +15,10 @@ const { id, fx, meta, text, cta, name } = Astro.props;
 ---
 
 <section class="band" id={id} data-fx={fx}>
-  <p class="meta">{meta}</p>
-  <div class="copy">
+  <p class="meta" data-in>
+    {meta}
+  </p>
+  <div class="copy" data-in>
     <p>{text}</p>
     <Button
       href={cta.href}
